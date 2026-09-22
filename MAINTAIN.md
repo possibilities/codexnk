@@ -54,20 +54,29 @@ not replace the system Codex binary and has no installer.
 
 ## Gate
 
-From the carry worktree, in `codex-rs`:
+The public repo runs only `.github/workflows/codexnk-release.yml`. Upstream
+workflows copied with the tree are disabled there. OpenAI's own CI covers
+code this patch does not change.
+
+On `main` and `carry/invocation-axes`, that workflow runs:
 
 ```sh
 just test -p codex-cli invocation_axes
 ```
 
+A `codexnk-v*` tag runs that test, then builds `codex` for
+`aarch64-apple-darwin` and `x86_64-unknown-linux-gnu`. The package step reads
+the binary from `CARGO_TARGET_DIR`, which setup-ci sets outside `target/`.
+
+The same test command is the local check, from the carry worktree's `codex-rs`.
+
 ## Consumer
 
 No local installer is bound. Do not replace the system Codex.
 
-Public binaries are GitHub Releases on `possibilities/codexnk-codex`. Pushing a
-`codexnk-v*` tag runs `.github/workflows/codexnk-release.yml` and attaches
-`codex` archives for `aarch64-apple-darwin` and `x86_64-unknown-linux-gnu`.
-The first tag is `codexnk-v0.1.0`.
+Public binaries are GitHub Releases on `possibilities/codexnk-codex`. The
+release workflow attaches one `codex` archive per target. The release tag is
+`codexnk-v0.1.0`.
 
 ## Notify
 
