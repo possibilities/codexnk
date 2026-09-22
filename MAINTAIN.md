@@ -23,8 +23,10 @@ not replace the system Codex binary and has no installer.
 - Mirror branch: local `main`, an exact mirror of `openai/codex` `main`.
 - Carry branch: `carry/invocation-axes`, the only carry. It contains the
   app-server launch split and nothing else.
-- Local `integration` points at that same carry commit. It is not published.
-  There is no publication remote for this carry.
+- Local `integration` points at the carry tip. The public release repository
+  is `possibilities/codexnk-codex`. Its `main` and `carry/invocation-axes`
+  are that same patched commit. Do not publish this effort to
+  `possibilities/codex`.
 - Deletion marker prefix: `DELETEME/`. Do not create one without an explicit
   request naming the branch.
 
@@ -60,7 +62,12 @@ just test -p codex-cli invocation_axes
 
 ## Consumer
 
-No consumer is bound. Do not install this fork over the system Codex.
+No local installer is bound. Do not replace the system Codex.
+
+Public binaries are GitHub Releases on `possibilities/codexnk-codex`. Pushing a
+`codexnk-v*` tag runs `.github/workflows/codexnk-release.yml` and attaches
+`codex` archives for `aarch64-apple-darwin` and `x86_64-unknown-linux-gnu`.
+The first tag is `codexnk-v0.1.0`.
 
 ## Notify
 
