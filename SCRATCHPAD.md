@@ -6,7 +6,8 @@
 disabled. The first release build failed while packaging because it looked in
 `target/` after setup-ci had set `CARGO_TARGET_DIR`.
 
-Carry tip `06a454c81b9e700c9c48210e25137a38e89c69d5` includes the CI fix.
+Carry tip `7bccdfb0e8` installs nextest before `just test`. The previous
+public test failed immediately because `cargo nextest` was not installed.
 Base remains upstream `main` `40eeb6e8a8`. Worktree:
 `~/worktrees/openai--codex/invocation-axes/openai--codex`. Not published to
 `possibilities/codex`. The system Codex is unchanged.
