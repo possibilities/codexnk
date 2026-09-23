@@ -44,8 +44,12 @@ not replace the system Codex binary and has no installer.
   storage for that process is the file, not the OS keyring.
 - `--capabilities` supplies user skills from `skills/` when that directory
   exists, MCP servers from the `[mcp_servers]` table in `config.toml`, and
-  developer instructions from `SYSTEM_APPEND.md`. Other keys in that config
-  file are ignored. Project config layers are not loaded for that process.
+  developer instructions from `SYSTEM_APPEND.md`. Skills are copied into the
+  private runtime directory, so later writes do not change the capabilities
+  directory. Other keys in that config file are ignored. Project config
+  layers are not loaded for that process. CLI auth and MCP OAuth credentials
+  for the process are stored in files under the runtime home, not the OS
+  keyring.
 - `--history-dir` supplies `sessions/` and `archived_sessions/`. Separate
   processes using the same history directory and different identity or
   capability directories append to that same session store.
