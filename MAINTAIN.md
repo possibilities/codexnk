@@ -12,23 +12,31 @@ not replace the system Codex binary and has no installer.
 
 ## Upstream
 
-- Bound checkout: `~/source/openai--codex`. `upstream` is `openai/codex`.
-  `fork` currently points at `possibilities/codex`; do not base or publish this
-  effort there.
-- Contribution stance: downstream-only. Do not open an upstream pull request.
-- Base: the captured upstream `main` recorded in `SCRATCHPAD.md`.
+- Bound checkout: `~/source/openai--codex-codexnk`. `upstream` is `openai/codex`.
+  `public` is `possibilities/codexnk-codex`, the release repository. This
+  checkout has no `fork` remote. Do not base or publish this effort on the
+  unrelated `possibilities/codex` repository.
+- Contribution stance: downstream-only. Offer nothing upstream and do not open
+  an upstream pull request. Judge future upstream replacements from code and
+  behavior, not request status.
+- Base: one exact upstream `main` captured for each cycle.
 
 ## Branch model
 
-- Mirror branch: local `main`, an exact mirror of `openai/codex` `main`.
-- Carry branch: `carry/invocation-axes`, the only carry. It contains the
-  app-server launch split and nothing else.
-- Local `integration` points at the carry tip. The public release repository
-  is `possibilities/codexnk-codex`. Its `main` and `carry/invocation-axes`
-  are that same patched commit. Do not publish this effort to
-  `possibilities/codex`.
+- Composition model: rebased carry heads. Local and public `main` mirror the
+  captured `openai/codex` `main` exactly. Public `integration` is the default
+  branch and the only patched release source; local `integration` points at
+  that published tip.
+- Exact carry ref: `carry/invocation-axes`, the only carry. It contains the
+  app-server launch split and its release workflow. Temporary carry branches
+  are not publication targets. The carry tip is an ancestor of `integration`.
+- Reconcile through `scripts/reconcile-branches.sh`, which delegates to the
+  maintain skill's shared branch script. The public remote is `public`. Do not
+  publish this effort to the unrelated `fork` remote.
 - Deletion marker prefix: `DELETEME/`. Do not create one without an explicit
   request naming the branch.
+- No upstream pull-request heads are validated; this fork offers nothing
+  upstream. Recorded rerere resolutions are not relied on.
 
 ## Features
 
@@ -62,7 +70,7 @@ The public repo runs only `.github/workflows/codexnk-release.yml`. Upstream
 workflows copied with the tree are disabled there. OpenAI's own CI covers
 code this patch does not change.
 
-On `main` and `carry/invocation-axes`, that workflow runs:
+On `integration` and `carry/invocation-axes`, that workflow runs:
 
 ```sh
 just test -p codex-cli invocation_axes
@@ -73,15 +81,35 @@ A `codexnk-v*` tag runs that test, then builds `codex` for
 the binary from `CARGO_TARGET_DIR`, which setup-ci sets outside `target/`.
 
 The same test command is the local check, from the carry worktree's `codex-rs`.
+Gate the exact committed candidate. Hosted branch CI is checked after
+publication and before creating a release tag.
 
 ## Consumer
 
-No local installer is bound. Do not replace the system Codex.
+No local installer is bound. Do not replace the system Codex. The consumer is
+the GitHub Release on `possibilities/codexnk-codex`.
 
 Public binaries are GitHub Releases on `possibilities/codexnk-codex`. The
-release workflow attaches one `codex` archive per target. The release tag is
-`codexnk-v0.1.0`.
+release workflow attaches one `codex` archive per target. The first published
+tag was `codexnk-v0.1.0`. Select the next unused patch tag after the current
+release recorded in `SCRATCHPAD.md`; it must point at the exact gated
+Integration commit. After branch CI succeeds for that commit, run from this
+workshop:
+
+```sh
+scripts/publish-release.sh "$candidate_sha" "$release_tag"
+```
+
+Wait for the tag workflow to succeed, then run from this workshop:
+
+```sh
+scripts/verify-release.sh "$candidate_sha" "$release_tag"
+```
+
+Never move an existing release tag.
 
 ## Notify
 
-No notification target. Record the carry commit in `SCRATCHPAD.md`.
+Use title `codexnk maintenance` and group `codexnk-maintain` for a material
+finding or blocked gate. Record the carry and Integration commits in
+`SCRATCHPAD.md`.

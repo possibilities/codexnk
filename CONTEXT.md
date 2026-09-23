@@ -4,9 +4,12 @@
 the local Codex fork.
 _Avoid_: wrapper, patch repo.
 
-**Main mirror** — Local `main` in `~/source/openai--codex`, tracking
-`openai/codex` `main`.
+**Main mirror** — Local and public `main` in `~/source/openai--codex-codexnk` and
+`possibilities/codexnk-codex`, tracking `openai/codex` `main`.
 _Avoid_: possibilities/codex, integration base.
+
+**Integration** — Patched release source in `possibilities/codexnk-codex`.
+_Avoid_: upstream mirror, temporary carry branch.
 
 **Carry branch** — A local `carry/<feature>` head based on upstream `main`.
 _Avoid_: patch branch, upstream pull request.
