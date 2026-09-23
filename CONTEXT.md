@@ -24,3 +24,12 @@ _Avoid_: shape, profile.
 **History** — The shared session directory. It does not select credentials or
 capabilities.
 _Avoid_: CODEX_HOME, transcript store.
+
+**Input middleware** — One opt-in app-server WebSocket owner that chooses how
+an exact human text candidate enters a loaded Codex thread: unchanged,
+replacement text, or intercepted without a working turn.
+_Avoid_: transcript listener, generic hook chain.
+
+**Admission journal** — The history-owned, per-thread record of input
+dispositions and external effect receipts, separate from the Codex rollout.
+_Avoid_: model transcript, WebSocket delivery guarantee.

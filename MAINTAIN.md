@@ -24,16 +24,21 @@ release binary; AgentStart selects it through its managed shim.
 
 ## Branch model
 
-- Composition model: rebased carry heads. Local and public `main` mirror the
+- Composition model: independent carry heads based on the captured upstream
+  `main`, merged into Integration. Local and public `main` mirror the
   captured `openai/codex` `main` exactly. Public `integration` is the default
   branch and the only patched release source; local `integration` points at
   that published tip.
-- Exact carry ref: `carry/invocation-axes`, the only carry. It contains the
-  app-server launch split and its release workflow. Temporary carry branches
-  are not publication targets. The carry tip is an ancestor of `integration`.
+- Exact carry refs: `carry/invocation-axes` (app-server launch split and release
+  workflow) and `carry/input-middleware` (the opt-in human-input gate). Temporary
+  carry branches are not publication targets. Both carry tips must be ancestors
+  of `integration`.
 - Reconcile through `scripts/reconcile-branches.sh`, which delegates to the
-  maintain skill's shared branch script. The public remote is `public`. Do not
-  publish this effort to the unrelated `fork` remote.
+  maintain skill's shared branch script. Publish a new Integration commit and
+  its carry head by an atomic fast-forward push to `public`, then run the
+  reconciliation check against those published heads. The script validates an
+  already-published Integration; it does not advance that branch. Do not publish
+  this effort to the unrelated `fork` remote.
 - Deletion marker prefix: `DELETEME/`. Do not create one without an explicit
   request naming the branch.
 - No upstream pull-request heads are validated; this fork offers nothing
@@ -65,25 +70,77 @@ release binary; AgentStart selects it through its managed shim.
 - This does not remove Codex's other skill discovery, such as a repository
   `.agents/skills` directory or `~/.agents/skills`.
 
+### Input middleware
+
+- App-server v2 exposes experimental `thread/input/middleware/attach` and
+  `detach` over its existing bidirectional WebSocket (or stdio). An explicit
+  attach claims one loaded retained thread for one connection; merely
+  connecting or subscribing never activates it. Without an owner, Codex takes
+  its stock local input path with no middleware round trip. An explicit detach
+  restores it. Disconnect retains the registered pass/reject unavailable
+  policy until a new owner attaches.
+- The same Core gate accepts direct, single plain-text human `turn/start` and
+  `turn/steer` input and finalized realtime handoff/tail text before the
+  working agent starts or steers. A registered typed submission needs a stable
+  `clientUserMessageId`. A handoff's existing working-agent text may include
+  realtime context wrapping; the middleware sees and may replace that entire
+  submitted text. This does not intercept every spoken utterance, suppress
+  hosted realtime speech, or cover queued, multimodal, tool, internal or
+  otherwise unmarked inputs. Unsupported registered input is rejected, not
+  silently allowed to bypass the gate.
+- A directed `thread/input/requestDisposition` server request accepts `pass`,
+  `replace {text}` or `intercept {operationId}`; one winning result is committed
+  before native dispatch. Requests to other connections cannot answer it.
+  Bound timeouts and malformed replies follow the explicitly registered
+  `onUnavailable: pass | reject` policy. The source identity is fenced and
+  deduplicated within the thread, including after restart. A pass or replace
+  means selected input, not guaranteed successful native turn dispatch.
+- The history-owned `input-middleware/<threadId>.jsonl` journal stays outside
+  `sessions/`, is synced before a disposition is acknowledged, and is reloaded
+  on attach after process restart. `thread/input/resolved` notifies the owner;
+  `thread/input/read` recovers the record; `thread/input/complete` stores an
+  idempotent, bounded external effect receipt for an intercepted source.
+  Retention is capped at 4096 distinct inputs per thread. A corrupt/full
+  journal or storage error refuses new registered input rather than dropping
+  its decision. The external effect still needs its own idempotency and
+  reconciliation; Codex cannot atomically transact with another service.
+
 ## Gate
 
 The public repo runs only `.github/workflows/codexnk-release.yml`. Upstream
 workflows copied with the tree are disabled there. OpenAI's own CI covers
 code this patch does not change.
 
-On `integration` and `carry/invocation-axes`, that workflow runs:
+On `integration`, the workflow runs all four focused checks below. The
+`carry/invocation-axes` branch retains its invocation-axes-only CI; the
+`carry/input-middleware` head is gated as an ancestor of Integration, since
+it has no release workflow on its upstream-based tree.
 
 ```sh
 just test -p codex-cli invocation_axes
+just test -p codex-app-server-protocol
+just test -p codex-app-server input_middleware
+just test -p codex-app-server realtime_handoff_is_intercepted_before_working_turn
 ```
 
 A `codexnk-v*` tag runs that test, then builds `codex` for
 `aarch64-apple-darwin` and `x86_64-unknown-linux-gnu`. The package step reads
 the binary from `CARGO_TARGET_DIR`, which setup-ci sets outside `target/`.
 
-The same test command is the local check, from the carry worktree's `codex-rs`.
+These focused checks are the local gate, from the carry or Integration
+worktree's `codex-rs`. A complete `just test` is attempted when authorized and
+practical; report any system-dependency or build-capacity blocker rather than
+claiming an incomplete suite passed.
+
 Gate the exact committed candidate. Hosted branch CI is checked after
 publication and before creating a release tag.
+
+After the last local gate and release verification, run `cargo clean` in each
+owned Codex build worktree used for this cycle, and remove other disposable
+build artifacts made in owned worktrees. Verify the intended paths and Git
+status first. Do not clean the bound/shared checkout, another worktree,
+global package caches or installed release artifacts. Keep a worktree while
+its branch still needs development; release cleanup does not discard source.
 
 ## Consumer
 

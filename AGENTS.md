@@ -15,3 +15,5 @@ as the base. Public `main` mirrors upstream; publish patched code from
 SHA consumer pin and its shim binding. Preserve the separately installed vendor
 Codex binary; never overwrite it. Test installer changes with
 `python3 tests/install.py` and an isolated real release installation.
+After delivery, reclaim build caches created in this task's owned worktrees as
+specified in `MAINTAIN.md`, without touching shared caches or the release install.
