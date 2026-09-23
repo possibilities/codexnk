@@ -115,6 +115,36 @@ class InstallTests(unittest.TestCase):
             installer.install(self.root, TAG, SHA, TARGET)
         self.assertEqual(list(self.root.iterdir()), [])
 
+    def test_failed_upgrade_preserves_current_release(self):
+        self.install()
+        previous = (self.root / "codex").resolve()
+        original = self.fake_run
+        def corrupted(*args):
+            result = original(*args)
+            if args[:3] == ("gh", "release", "download"):
+                (Path(args[-1]) / self.archive.name).write_bytes(b"corrupt")
+            return result
+        with patch.object(installer, "run", corrupted), self.assertRaisesRegex(ValueError, "mismatch"):
+            installer.install(self.root, "codexnk-v0.1.2", SHA, TARGET)
+        self.assertEqual((self.root / "codex").resolve(), previous)
+        self.assertEqual(previous.read_bytes(), b"fake executable")
+        self.assertFalse((self.root / ".install-lock").exists())
+
+    def test_foreign_lock_is_not_removed(self):
+        lock = self.root / ".install-lock"
+        lock.mkdir(parents=True)
+        with self.assertRaisesRegex(ValueError, "another installation"):
+            self.install()
+        self.assertTrue(lock.is_dir())
+
+    def test_redirected_install_root_is_not_adopted(self):
+        foreign = self.base / "foreign"
+        foreign.mkdir()
+        self.root.symlink_to(foreign)
+        with self.assertRaisesRegex(ValueError, "redirected install root"):
+            self.install()
+        self.assertEqual(list(foreign.iterdir()), [])
+
 
 if __name__ == "__main__":
     unittest.main()
