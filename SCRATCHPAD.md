@@ -7,7 +7,8 @@
   `carry/invocation-axes` point at `2945e58e2fb751dcaa1957f594bbef50fbd78392`.
   The public default branch is `integration`; 11 unrelated heads were unchanged.
 - `codexnk-v0.1.1` points at that Integration commit. Release workflow and
-  archive verification are pending. No local installer or system Codex binding.
+  archive verification are pending. The workshop now provides a separate
+  receipt-verified release installer for AgentStart's exact consumer pin.
 - The previous release `codexnk-v0.1.0` points at `7bccdfb0e871681472ff9c9e2a160c4e1d479453`.
   Before this cycle, public `main` and the carry were
   `f832ae88f82a5aed86a072556e753bd253f11619`.

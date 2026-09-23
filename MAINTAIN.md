@@ -8,7 +8,8 @@ to `possibilities/codex`.
 ## Purpose
 
 Keep the carried behavior below rebuilt on `openai/codex` `main`. The fork does
-not replace the system Codex binary and has no installer.
+not overwrite the vendor Codex binary. The workshop installs a separately owned
+release binary; AgentStart selects it through its managed shim.
 
 ## Upstream
 
@@ -86,8 +87,20 @@ publication and before creating a release tag.
 
 ## Consumer
 
-No local installer is bound. Do not replace the system Codex. The consumer is
-the GitHub Release on `possibilities/codexnk-codex`.
+AgentStart pins an exact stable release tag and Integration SHA and invokes:
+
+```sh
+scripts/install.sh --install --tag codexnk-vVERSION --sha FULL_COMMIT
+```
+
+The installer checks the tag's commit, GitHub asset SHA-256 and size, archive
+structure, and invocation flags before atomically publishing the executable at
+`~/.local/libexec/codexnk/codex`. Existing installs must match their ownership
+receipts. It never launches a session, writes auth/config, or restarts processes.
+`--print-bin` reports the absolute consumer path without mutation; `--check`
+prints the plan. `CODEXNK_INSTALL_ROOT` relocates the private install directory
+for isolated tests. Prior release directories remain for recovery. Vendor Codex
+remains separate. Updating a release does not advance AgentStart's consumer pin.
 
 Public binaries are GitHub Releases on `possibilities/codexnk-codex`. The
 release workflow attaches one `codex` archive per target. The first published

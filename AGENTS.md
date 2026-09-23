@@ -10,4 +10,8 @@ as the base. Public `main` mirrors upstream; publish patched code from
 `integration` in `possibilities/codexnk-codex`. Read that checkout's
 `AGENTS.md` before modifying Codex.
 
-There is no installer and no consumer pin. Do not replace the system Codex.
+`scripts/install.sh` owns an isolated, receipt-verified release installation at
+`~/.local/libexec/codexnk/codex`. AgentStart owns the exact release tag/Integration
+SHA consumer pin and its shim binding. Preserve the separately installed vendor
+Codex binary; never overwrite it. Test installer changes with
+`python3 tests/install.py` and an isolated real release installation.
