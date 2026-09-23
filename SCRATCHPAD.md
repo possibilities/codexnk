@@ -6,9 +6,11 @@
 - Public `main` mirrors that commit. Public `integration` and
   `carry/invocation-axes` point at `2945e58e2fb751dcaa1957f594bbef50fbd78392`.
   The public default branch is `integration`; 11 unrelated heads were unchanged.
-- `codexnk-v0.1.1` points at that Integration commit. Release workflow and
-  archive verification are pending. The workshop now provides a separate
-  receipt-verified release installer for AgentStart's exact consumer pin.
+- `codexnk-v0.1.1` points at that Integration commit. Release workflow
+  [35880396004](https://github.com/possibilities/codexnk-codex/actions/runs/35880396004)
+  succeeded; both macOS and Linux archives passed tag and SHA-256 verification.
+  The receipt-verified installer published AgentStart's exact consumer pin at
+  `~/.local/libexec/codexnk/codex` on 2026-09-23, preserving vendor Codex.
 - The previous release `codexnk-v0.1.0` points at `7bccdfb0e871681472ff9c9e2a160c4e1d479453`.
   Before this cycle, public `main` and the carry were
   `f832ae88f82a5aed86a072556e753bd253f11619`.
@@ -43,7 +45,9 @@
   the dedicated carry worktree; its freshly built `codex app-server` started
   with all three flags and created both shared history directories. A stock
   launch with a temporary `CODEX_HOME` also exited cleanly. Hosted Integration
-  and carry CI succeeded for the same SHA. The release workflow is pending.
+  and carry CI succeeded for the same SHA. The release workflow succeeded,
+  both published archives verified, and the installed macOS binary passed the
+  installer's version and invocation-axis probes.
 - Follow-up: the current `TempDir::keep()` leaves the private runtime home,
   including its copied `auth.json`, after process exit. A later carry repair
   should make that directory's lifetime match the app-server process.
@@ -57,5 +61,6 @@ its own checkout. The previous workshop shared a checkout with codpiece.
 Pinned branch reconciliation and supervision checks passed; one unrelated
 Dependabot head disappeared after publication, leaving 10 other heads.
 The dedicated checkout uses HTTPS with the `gh` credential helper after its
-SSH key became unavailable at tag creation. Release verification is pending.
+SSH key became unavailable at tag creation. Release verification and the
+exact-pin macOS installation completed on 2026-09-23.
 No `DELETEME/*` marker affects this cycle.
