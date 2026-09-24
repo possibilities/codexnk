@@ -3,17 +3,27 @@
 ## Delivered baseline
 
 - Captured upstream `main`: `30fc6864cc1318121eca1843c217fe00ce1212f1`.
-- Public `main` mirrors that commit. Public `integration` and
-  `carry/invocation-axes` point at `2945e58e2fb751dcaa1957f594bbef50fbd78392`.
-  The public default branch is `integration`; 11 unrelated heads were unchanged.
-- `codexnk-v0.1.1` points at that Integration commit. Release workflow
+- Public `main` mirrors that commit. `carry/invocation-axes` remains
+  `2945e58e2fb751dcaa1957f594bbef50fbd78392`; `carry/input-middleware`
+  is `ec4fa5144da520717ebba8c7a3ad8cf583afa798`. Both are ancestors of
+  public `integration` at `9103c8d5162ca57717814733e66a49a2ed756e30`.
+  The public default branch remains `integration`; other public heads were
+  preserved.
+- `codexnk-v0.1.2` points at that Integration commit. Release workflow
+  [35932602669](https://github.com/possibilities/codexnk-codex/actions/runs/35932602669)
+  succeeded; the macOS and Linux archives passed release digest verification.
+  An isolated real macOS release install passed the AgentStack two-client
+  WebSocket interception/receipt smoke; the verified release was then installed
+  at `~/.local/libexec/codexnk/codex` on 2026-09-24, preserving vendor Codex.
+  AgentStart's exact pin and AgentStack's required-runtime pin both name this
+  tag/SHA. AgentStack source/UI is installed without restarting active servers.
+- The previous release `codexnk-v0.1.1` points at
+  `2945e58e2fb751dcaa1957f594bbef50fbd78392`. Release workflow
   [35880396004](https://github.com/possibilities/codexnk-codex/actions/runs/35880396004)
-  succeeded; both macOS and Linux archives passed tag and SHA-256 verification.
-  The receipt-verified installer published AgentStart's exact consumer pin at
-  `~/.local/libexec/codexnk/codex` on 2026-09-23, preserving vendor Codex.
-- The previous release `codexnk-v0.1.0` points at `7bccdfb0e871681472ff9c9e2a160c4e1d479453`.
-  Before this cycle, public `main` and the carry were
-  `f832ae88f82a5aed86a072556e753bd253f11619`.
+  succeeded and its archives were verified at delivery.
+- The earlier `codexnk-v0.1.0` points at
+  `7bccdfb0e871681472ff9c9e2a160c4e1d479453`; before the v0.1.1 cycle,
+  public `main` and its carry were `f832ae88f82a5aed86a072556e753bd253f11619`.
 
 ## Audited upstream frontier
 
@@ -30,8 +40,8 @@
 
 ## Carry: invocation axes
 
-- Exact carry and Integration commit:
-  `2945e58e2fb751dcaa1957f594bbef50fbd78392`, based on the captured
+- Exact carry commit: `2945e58e2fb751dcaa1957f594bbef50fbd78392`,
+  an ancestor of current Integration, based on the captured
   upstream target. Historical upstream reference: `40eeb6e8a89ef421c25d4c40e06fa1d40ce66b4f`.
 - Disposition: **repair**. Upstream extracted WebSocket auth argument types,
   requiring one mechanical `cli/main.rs` replay resolution. Upstream's new
@@ -52,6 +62,25 @@
   including its copied `auth.json`, after process exit. A later carry repair
   should make that directory's lifetime match the app-server process.
 
+## Carry: input middleware
+
+- Exact carry `ec4fa5144da520717ebba8c7a3ad8cf583afa798` is based on the
+  captured upstream `main`. Integration merge/checks are at
+  `9103c8d5162ca57717814733e66a49a2ed756e30`.
+- An explicit app-server WebSocket owner handles direct typed text and
+  finalized realtime handoffs with `pass`, `replace` or `intercept`; no owner
+  leaves stock Codex behavior. It journals dispositions in History before
+  acknowledging an external effect and supports read/reconnect, explicit
+  detach and bounded effect receipts. Queue, multimodal, internal input and
+  utterances not delegated by realtime remain outside the gate.
+- Focused protocol, app-server WebSocket, voice handoff and invocation-axis
+  tests passed locally or in hosted Integration/tag CI; both release archives
+  and the isolated real-release interception smoke passed. A complete local
+  `just test` was attempted but could not link within local disk capacity;
+  the task's owned Rust targets were cleaned. AgentStack's host-side client and
+  optional pass-through observation UI (latest 200 candidates/outcomes in
+  process memory) are installed; actual command-routing policy follows later.
+
 ## Cycle history
 
 2026-09-23: Reviewed the complete 138-commit interval above. Dispositions:
@@ -64,3 +93,11 @@ The dedicated checkout uses HTTPS with the `gh` credential helper after its
 SSH key became unavailable at tag creation. Release verification and the
 exact-pin macOS installation completed on 2026-09-23.
 No `DELETEME/*` marker affects this cycle.
+
+2026-09-24: Published the separate input-middleware carry and merged it into
+Integration, verified `codexnk-v0.1.2` on both platforms, and activated the
+aligned AgentStart/AgentStack pins without restarting any resident Codex
+process. The local feature/build worktrees and their task-owned Rust caches
+were removed after verification. The integration/workflow push used the
+available SSH credential because the HTTPS OAuth token lacked workflow scope;
+the push was atomic and branch reconciliation passed afterward.
