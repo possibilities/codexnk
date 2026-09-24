@@ -34,8 +34,9 @@ release binary; AgentStart selects it through its managed shim.
   carry branches are not publication targets. Both carry tips must be ancestors
   of `integration`.
 - Reconcile through `scripts/reconcile-branches.sh`, which delegates to the
-  maintain skill's shared branch script. Publish a new Integration commit and
-  its carry head by an atomic fast-forward push to `public`, then run the
+  maintain skill's shared branch script. Publish the captured upstream mirror,
+  new Integration commit, and both replayed carry heads by one exact-leased
+  atomic push to `public`, then run the
   reconciliation check against those published heads. The script validates an
   already-published Integration; it does not advance that branch. Do not publish
   this effort to the unrelated `fork` remote.
@@ -57,18 +58,22 @@ release binary; AgentStart selects it through its managed shim.
   runtime directory and the identity directory is not written. Credential
   storage for that process is the file, not the OS keyring.
 - `--capabilities` supplies user skills from `skills/` when that directory
-  exists, MCP servers from the `[mcp_servers]` table in `config.toml`, and
-  developer instructions from `SYSTEM_APPEND.md`. Skills are copied into the
-  private runtime directory, so later writes do not change the capabilities
-  directory. Other keys in that config file are ignored. Project config
-  layers are not loaded for that process. CLI auth and MCP OAuth credentials
-  for the process are stored in files under the runtime home, not the OS
-  keyring.
+  exists, MCP servers from `[mcp_servers]` and project trust decisions from
+  `[projects]` in `config.toml`, and developer instructions from
+  `SYSTEM_APPEND.md`. Skills are copied into the private runtime directory, so
+  later writes do not change the capabilities directory. Other keys in that
+  config file are ignored. Trusted project config layers, project `.codex/skills`,
+  and repository `.agents/skills` remain available; project trust is established
+  in the private runtime, not imported from the operator's `~/.codex`. CLI auth
+  and MCP OAuth credentials for the process are stored in files under the runtime
+  home, not the OS keyring.
 - `--history-dir` supplies `sessions/` and `archived_sessions/`. Separate
   processes using the same history directory and different identity or
   capability directories append to that same session store.
-- This does not remove Codex's other skill discovery, such as a repository
-  `.agents/skills` directory or `~/.agents/skills`.
+- A three-axis launch excludes home-level `~/.agents/skills` and personal plugin
+  marketplaces under home dot-directories. It does not change `HOME`, system or
+  managed policy, bundled capabilities, explicit runtime selections, or Codex's
+  ability to read ordinary files. Absent flags retain stock discovery.
 
 ### Input middleware
 
@@ -111,13 +116,16 @@ The public repo runs only `.github/workflows/codexnk-release.yml`. Upstream
 workflows copied with the tree are disabled there. OpenAI's own CI covers
 code this patch does not change.
 
-On `integration`, the workflow runs all four focused checks below. The
-`carry/invocation-axes` branch retains its invocation-axes-only CI; the
+On `integration`, the workflow runs the focused checks below. The
+`carry/invocation-axes` branch runs the first four checks; the
 `carry/input-middleware` head is gated as an ancestor of Integration, since
 it has no release workflow on its upstream-based tree.
 
 ```sh
 just test -p codex-cli invocation_axes
+just test -p codex-config scoped_capabilities_keep_trusted_project_mcp_without_home_config
+just test -p codex-skills-extension scoped_capabilities_keep_project_skills_without_home_skills
+just test -p codex-core-plugins scoped_capabilities_omit_home_marketplace_but_keep_project_marketplace
 just test -p codex-app-server-protocol
 just test -p codex-app-server input_middleware
 just test -p codex-app-server realtime_handoff_is_intercepted_before_working_turn
