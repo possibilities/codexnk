@@ -46,15 +46,11 @@ for target in aarch64-apple-darwin x86_64-unknown-linux-gnu; do
     }
     gh release download "$tag" --repo "$repo" --pattern "$archive" --dir "$temporary"
     actual=$(shasum -a 256 "$temporary/$archive" | awk '{ print $1 }')
-    [ "sha256:$actual" = "$digest" ] || {
-        printf 'release: digest mismatch for %s\n' "$archive" >&2
+    [ "sha256:$actual" = "$digest" ] && [ "$(stat -f%z "$temporary/$archive")" = "$size" ] || {
+        printf 'release: digest or size mismatch for %s\n' "$archive" >&2
         exit 1
     }
-    tar -tzf "$temporary/$archive" >"$temporary/entries"
-    rg -q -x "$name/codex" "$temporary/entries" || {
-        printf 'release: %s lacks its codex binary\n' "$archive" >&2
-        exit 1
-    }
+    python3 "$(dirname "$0")/verify-archive.py" "$temporary/$archive" "$target" "$tag"
     printf 'Verified %s (%s bytes, %s).\n' "$archive" "$size" "$digest"
     rm "$temporary/$archive"
 done

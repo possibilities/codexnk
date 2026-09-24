@@ -13,7 +13,21 @@ import tarfile
 import tempfile
 
 REPOSITORY = "possibilities/codexnk-codex"
-OWNER = "codexnk-release-v1"
+OWNER = "codexnk-release-v2"
+LEGACY_OWNER = "codexnk-release-v1"
+
+
+def package_files(target):
+    files = ("bin/codex", "bin/codex-code-mode-host", "codex-package.json")
+    if "linux" in target:
+        files += ("codex-resources/bwrap",)
+    return files
+
+
+def package_metadata(target, tag):
+    return {"layoutVersion": 1, "version": tag.removeprefix("codexnk-v"),
+            "target": target, "variant": "codex", "entrypoint": "bin/codex",
+            "resourcesDir": "codex-resources", "pathDir": "codex-path"}
 
 
 def run(*args):
@@ -28,24 +42,52 @@ def digest(path):
         return checksum.hexdigest()
 
 
-def extract_binary(archive, destination, target):
-    name = f"codex-{target}/codex"
+def extract_package(archive, destination, target, tag):
+    prefix = f"codex-{target}"
+    files = package_files(target)
+    expected = {f"{prefix}/{file}" for file in files}
+    directories = {prefix, f"{prefix}/bin"}
+    if "linux" in target:
+        directories.add(f"{prefix}/codex-resources")
     with tarfile.open(archive, "r:gz") as bundle:
         members = bundle.getmembers()
-        binaries = [entry for entry in members if entry.name == name]
-        if len(binaries) != 1 or not binaries[0].isfile():
-            raise ValueError("release must contain exactly one regular codex executable")
+        names = [entry.name for entry in members]
+        if len(names) != len(set(names)) or not expected <= {entry.name for entry in members if entry.isfile()}:
+            raise ValueError("release package has missing or duplicate required files")
         for entry in members:
-            if entry.name == name and entry.isfile():
+            if entry.name in expected and entry.isfile():
+                if not 0 < entry.size <= 2 * 1024**3:
+                    raise ValueError(f"invalid package file size: {entry.name}")
+                if entry.name != f"{prefix}/codex-package.json" and not entry.mode & 0o111:
+                    raise ValueError(f"package file is not executable: {entry.name}")
                 continue
-            if entry.name.rstrip("/") == f"codex-{target}" and entry.isdir():
+            if entry.name.rstrip("/") in directories and entry.isdir():
                 continue
             raise ValueError(f"unexpected archive member: {entry.name}")
-        if not 0 < binaries[0].size <= 2 * 1024**3:
-            raise ValueError("invalid executable size")
-        with bundle.extractfile(binaries[0]) as source, destination.open("xb") as output:
-            shutil.copyfileobj(source, output)
-    destination.chmod(0o755)
+        for file in files:
+            member = bundle.getmember(f"{prefix}/{file}")
+            path = destination / file
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with bundle.extractfile(member) as source, path.open("xb") as output:
+                shutil.copyfileobj(source, output)
+            path.chmod(0o600 if file == "codex-package.json" else 0o755)
+    if json.loads((destination / "codex-package.json").read_text()) != package_metadata(target, tag):
+        raise ValueError("release package metadata does not match target and tag")
+
+
+def verify_files(directory, target, files_sha256):
+    if not isinstance(target, str) or not isinstance(files_sha256, dict) or set(files_sha256) != set(package_files(target)):
+        raise ValueError("release receipt has incomplete package files")
+    if any((directory / part).is_symlink() for part in ("bin", "codex-resources")):
+        raise ValueError("release package has redirected directory")
+    for file, checksum in files_sha256.items():
+        path = directory / file
+        if path.is_symlink() or not path.is_file() or not isinstance(checksum, str) or not re.fullmatch(r"[0-9a-f]{64}", checksum):
+            raise ValueError(f"release package has missing or redirected file: {file}")
+        if file != "codex-package.json" and not path.stat().st_mode & 0o111:
+            raise ValueError(f"release package has non-executable file: {file}")
+        if digest(path) != checksum:
+            raise ValueError(f"release package file differs from ownership receipt: {file}")
 
 
 def inspect_release(tag, sha):
@@ -90,11 +132,21 @@ def install(root, tag, sha, target):
         link = root / "codex"
         if link.is_symlink():
             current = link.resolve()
-            receipt_path = current.parent / "receipt.json"
-            if current.name != "codex" or current.parent.parent != root or not receipt_path.is_file() or receipt_path.is_symlink():
+            legacy = current.name == "codex" and current.parent.parent == root
+            packaged = current.name == "codex" and current.parent.name == "bin" and current.parent.parent.parent == root
+            release_dir = current.parent if legacy else current.parent.parent
+            receipt_path = release_dir / "receipt.json"
+            if not (legacy or packaged) or not receipt_path.is_file() or receipt_path.is_symlink():
                 raise ValueError("refusing foreign codex link")
             receipt = json.loads(receipt_path.read_text())
-            if receipt.get("owner") != OWNER or digest(current) != receipt.get("binary_sha256"):
+            if legacy and receipt.get("owner") == LEGACY_OWNER and digest(current) == receipt.get("binary_sha256"):
+                # The previous binary-only release is accepted solely as an upgrade source.
+                pass
+            elif packaged and receipt.get("owner") == OWNER and receipt.get("repository") == REPOSITORY:
+                verify_files(release_dir, receipt.get("target"), receipt.get("files_sha256"))
+                if json.loads((release_dir / "codex-package.json").read_text()) != package_metadata(receipt["target"], receipt["tag"]):
+                    raise ValueError("installed package metadata differs from ownership receipt")
+            else:
                 raise ValueError("installed binary differs from its ownership receipt")
         elif link.exists():
             raise ValueError("refusing independent codex executable")
@@ -103,11 +155,14 @@ def install(root, tag, sha, target):
         if destination.exists() or destination.is_symlink():
             if destination.is_symlink():
                 raise ValueError("refusing redirected release directory")
-            if (destination / "codex").is_symlink() or (destination / "receipt.json").is_symlink():
+            if (destination / "receipt.json").is_symlink():
                 raise ValueError("refusing redirected release files")
             receipt = json.loads((destination / "receipt.json").read_text())
-            if any(receipt.get(k) != v for k, v in expected.items()) or digest(destination / "codex") != receipt.get("binary_sha256"):
+            if any(receipt.get(k) != v for k, v in expected.items()):
                 raise ValueError("existing release differs from its receipt")
+            verify_files(destination, target, receipt.get("files_sha256"))
+            if json.loads((destination / "codex-package.json").read_text()) != package_metadata(target, tag):
+                raise ValueError("existing release metadata differs from its receipt")
         else:
             stage = Path(tempfile.mkdtemp(prefix=".release-", dir=root))
             run("gh", "release", "download", tag, "--repo", REPOSITORY,
@@ -115,21 +170,24 @@ def install(root, tag, sha, target):
             archive = stage / name
             if archive.stat().st_size != asset["size"] or digest(archive) != checksum[7:]:
                 raise ValueError("downloaded archive digest or size mismatch")
-            binary = stage / "codex"
-            extract_binary(archive, binary, target)
+            extract_package(archive, stage, target, tag)
+            binary = stage / "bin/codex"
             version = run(str(binary), "--version")
             help_text = run(str(binary), "app-server", "--help")
             if not version.startswith("codex-cli ") or not all(flag in help_text for flag in ("--identity", "--capabilities", "--history-dir")):
                 raise ValueError("downloaded binary lacks the codexnk invocation contract")
+            if "--listen" not in run(str(stage / "bin/codex-code-mode-host"), "--help"):
+                raise ValueError("downloaded code-mode host lacks its runtime contract")
             archive.unlink()
             receipt_path = stage / "receipt.json"
-            receipt_path.write_text(json.dumps({**expected, "binary_sha256": digest(binary), "version": version}, indent=2) + "\n")
+            files_sha256 = {file: digest(stage / file) for file in package_files(target)}
+            receipt_path.write_text(json.dumps({**expected, "files_sha256": files_sha256, "version": version}, indent=2) + "\n")
             receipt_path.chmod(0o600)
             stage.rename(destination)
             stage = None
         # A new link in the owned lock directory makes publication atomic.
         pending = lock / "codex"
-        pending.symlink_to(destination / "codex")
+        pending.symlink_to(destination / "bin/codex")
         pending.replace(link)
         print(f"Installed {tag} ({sha}) at {link}")
     finally:
@@ -163,7 +221,7 @@ def main():
     elif args.print_bin:
         print(root / "codex")
     else:
-        print(f"Install a pinned codexnk GitHub Release into {root}; verify tag, archive digest, binary and receipt; atomically publish {root / 'codex'}. Vendor Codex remains installed separately.")
+        print(f"Install a pinned codexnk GitHub Release into {root}; verify tag, archive digest, runtime package and receipt; atomically publish {root / 'codex'}. Vendor Codex remains installed separately.")
 
 
 if __name__ == "__main__":

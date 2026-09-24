@@ -29,13 +29,14 @@ release binary; AgentStart selects it through its managed shim.
   captured `openai/codex` `main` exactly. Public `integration` is the default
   branch and the only patched release source; local `integration` points at
   that published tip.
-- Exact carry refs: `carry/invocation-axes` (app-server launch split and release
-  workflow) and `carry/input-middleware` (the opt-in human-input gate). Temporary
-  carry branches are not publication targets. Both carry tips must be ancestors
-  of `integration`.
+- Exact carry refs: `carry/invocation-axes` (app-server launch split),
+  `carry/input-middleware` (the opt-in human-input gate), and
+  `carry/runtime-companions` (the release package workflow). Temporary carry
+  branches are not publication targets. All carry tips must be ancestors of
+  `integration`.
 - Reconcile through `scripts/reconcile-branches.sh`, which delegates to the
   maintain skill's shared branch script. Publish the captured upstream mirror,
-  new Integration commit, and both replayed carry heads by one exact-leased
+  new Integration commit, and the declared carry heads by one exact-leased
   atomic push to `public`, then run the
   reconciliation check against those published heads. The script validates an
   already-published Integration; it does not advance that branch. Do not publish
@@ -118,8 +119,9 @@ code this patch does not change.
 
 On `integration`, the workflow runs the focused checks below. The
 `carry/invocation-axes` branch runs the first four checks; the
-`carry/input-middleware` head is gated as an ancestor of Integration, since
-it has no release workflow on its upstream-based tree.
+`carry/input-middleware` and `carry/runtime-companions` heads are gated as
+ancestors of Integration, since they do not run Integration's full check set
+on their upstream-based trees.
 
 ```sh
 just test -p codex-cli invocation_axes
@@ -131,9 +133,10 @@ just test -p codex-app-server input_middleware
 just test -p codex-app-server realtime_handoff_is_intercepted_before_working_turn
 ```
 
-A `codexnk-v*` tag runs that test, then builds `codex` for
+A `codexnk-v*` tag runs that test, then builds `codex`,
+`codex-code-mode-host`, and on Linux a digest-bound `bwrap` for
 `aarch64-apple-darwin` and `x86_64-unknown-linux-gnu`. The package step reads
-the binary from `CARGO_TARGET_DIR`, which setup-ci sets outside `target/`.
+the binaries from `CARGO_TARGET_DIR`, which setup-ci sets outside `target/`.
 
 These focused checks are the local gate, from the carry or Integration
 worktree's `codex-rs`. A complete `just test` is attempted when authorized and
@@ -159,16 +162,20 @@ scripts/install.sh --install --tag codexnk-vVERSION --sha FULL_COMMIT
 ```
 
 The installer checks the tag's commit, GitHub asset SHA-256 and size, archive
-structure, and invocation flags before atomically publishing the executable at
-`~/.local/libexec/codexnk/codex`. Existing installs must match their ownership
-receipts. It never launches a session, writes auth/config, or restarts processes.
+structure, package metadata, and invocation flags before atomically publishing
+the executable at `~/.local/libexec/codexnk/codex`. The versioned package
+contains `bin/codex`, `bin/codex-code-mode-host`, `codex-package.json`, and on
+Linux `codex-resources/bwrap`. Codex's package layout resolves the helper even
+when launched through the public symlink. Existing installs must match the
+per-file ownership receipt; binary-only v1 receipts are accepted only as an
+upgrade source. It never launches a session, writes auth/config, or restarts processes.
 `--print-bin` reports the absolute consumer path without mutation; `--check`
 prints the plan. `CODEXNK_INSTALL_ROOT` relocates the private install directory
 for isolated tests. Prior release directories remain for recovery. Vendor Codex
 remains separate. Updating a release does not advance AgentStart's consumer pin.
 
 Public binaries are GitHub Releases on `possibilities/codexnk-codex`. The
-release workflow attaches one `codex` archive per target. The first published
+release workflow attaches one runtime package archive per target. The first published
 tag was `codexnk-v0.1.0`. Select the next unused patch tag after the current
 release recorded in `SCRATCHPAD.md`; it must point at the exact gated
 Integration commit. After branch CI succeeds for that commit, run from this

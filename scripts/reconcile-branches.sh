@@ -20,7 +20,7 @@ export MAINTAIN_UPSTREAM_REMOTE=upstream
 export MAINTAIN_MAIN_BRANCH=main
 export MAINTAIN_INTEGRATION_BRANCH=integration
 export MAINTAIN_CARRY_PREFIX=''
-export MAINTAIN_CARRY_REFS='carry/invocation-axes carry/input-middleware'
+export MAINTAIN_CARRY_REFS='carry/invocation-axes carry/input-middleware carry/runtime-companions'
 export MAINTAIN_QUARANTINE_PREFIX=DELETEME/
 export MAINTAIN_PRESERVE_OPEN_PRS=0
 
