@@ -4,16 +4,27 @@
 
 - Captured upstream `main`: `e154f7b80789b742b162cf0e44de0bc021068a20`.
 - Public `main` mirrors that commit. `carry/invocation-axes` is
-  `1548dae6870d8c5c08dd3676aa8210041cf48f29` after a workflow-only
-  release-benchmark follow-up; `carry/input-middleware`
+  `e505b098a6f221a58159cf6a97b60c8669fcc976` after the measured
+  macOS release-build optimization; `carry/input-middleware`
   is `0f8797fbbe3103e0edb8c9d951c22e20fe310e26`. Its tip and the
   invocation-axes behavioral commit were published atomically with Integration
   `7d341030af1c243eeb334294be31aeb3c58d233c`.
   `carry/runtime-companions` at `7939215687df51e24d39662507d4e392a3856211`
   advanced public Integration to `f2905ff011ff8fda607e91dfdd8f13b6083b1642`.
-  The benchmark follow-up advanced public Integration again to
-  `5d44a627096a1f7dadcdd0476165030f89a8ad40`; all three carries are
+  The release-speed follow-up advanced public Integration to
+  `f88f7d781ea78ed65fbb9f65d110ee3e4b280323`; all three carries are
   ancestors. The public default branch remains `integration`.
+- `codexnk-v0.1.5` points at `f88f7d781ea78ed65fbb9f65d110ee3e4b280323`.
+  [Integration CI 36100034582](https://github.com/possibilities/codexnk-codex/actions/runs/36100034582),
+  [carry CI 36100034795](https://github.com/possibilities/codexnk-codex/actions/runs/36100034795),
+  and [tag workflow 36157887653](https://github.com/possibilities/codexnk-codex/actions/runs/36157887653)
+  passed. Both published archives passed exact-tag, asset digest/size, package
+  membership, executable-mode, and metadata verification. The shipping macOS
+  profile retains thin LTO and uses eight codegen units; Linux is unchanged.
+  The macOS tag build step took 81m 44s versus v0.1.4's 106m 49s (25m 05s,
+  about 23% faster). The separately dispatched codegen-8 benchmark took
+  65m 36s. No installed package or AgentStart/AgentStack consumer pin was
+  advanced from v0.1.4 as part of this release-speed experiment.
 - `codexnk-v0.1.4` points at `f2905ff011ff8fda607e91dfdd8f13b6083b1642`.
   [Branch CI 36074724963](https://github.com/possibilities/codexnk-codex/actions/runs/36074724963)
   and [tag workflow 36076524505](https://github.com/possibilities/codexnk-codex/actions/runs/36076524505)
@@ -70,10 +81,11 @@
 
 ## Carry: invocation axes
 
-- Current carry tip `1548dae6870d8c5c08dd3676aa8210041cf48f29`
-  adds release build timings and a macOS LTO benchmark to behavioral commit
-  `154c48569b4df5e4319b55f7745461d37fee2a23`. Both are based on the
-  captured upstream target and ancestors of public Integration. Historical
+- Current carry tip `e505b098a6f221a58159cf6a97b60c8669fcc976`
+  adds release build timings, non-publishing macOS profile benchmarks, and
+  eight codegen units for the shipping macOS build to behavioral commit
+  `154c48569b4df5e4319b55f7745461d37fee2a23`. The carry is based on the
+  captured upstream target and is an ancestor of public Integration. Historical
   upstream reference: `40eeb6e8a89ef421c25d4c40e06fa1d40ce66b4f`.
 - Disposition: **repair**. The launch split remains necessary. The carry now
   excludes home-level skill and personal marketplace discovery while retaining
@@ -134,6 +146,28 @@
   isolated code-mode file-read/count smoke in the Bot cwd. No task-owned Rust
   build caches were created locally. A complete local `just test` was not run.
 
+## macOS release-speed experiment
+
+- The v0.1.4 shipping build used thin LTO and four codegen units; its macOS
+  build step took 106m 49s and the `codex` binary was 320,691,416 bytes.
+  Cargo timing artifacts were added to release builds and opt-in, non-publishing
+  macOS profile benchmarks. No tag-only sccache was added because GitHub cache
+  scope prevents ordinary reuse between successive tag builds.
+- [No-LTO benchmark 36082826747](https://github.com/possibilities/codexnk-codex/actions/runs/36082826747)
+  took 88m 31s, but grew `codex` to 347,907,560 bytes and slowed basic
+  startup tests. [Thin-LTO/codegen-16 benchmark 36089524068](https://github.com/possibilities/codexnk-codex/actions/runs/36089524068)
+  took 68m 51s, grew `codex` to 384,612,728 bytes, and made `--help` about
+  2 ms slower in a local comparison.
+- [Thin-LTO/codegen-8 benchmark 36094945997](https://github.com/possibilities/codexnk-codex/actions/runs/36094945997)
+  took 65m 36s; its `codex` binary was 355,176,888 bytes (+10.8% against
+  v0.1.4) and `--help` startup was effectively tied in a 30-run local comparison
+  (about 6.0 ms versus 6.1 ms). It was selected for the macOS release build.
+  The tagged release's 81m 44s build demonstrates runner-to-runner variability;
+  the measured shipping improvement is 25m 05s against v0.1.4, not a promise
+  of the benchmark's 41m 13s improvement on every run. The local M4 Air has
+  10 CPU cores/16 GB memory, but only 27 GiB free at evaluation; no local full
+  build was attempted and no local-build speedup was measured.
+
 ## Cycle history
 
 2026-09-23: Reviewed the complete 138-commit interval above. Dispositions:
@@ -181,3 +215,11 @@ restarting active processes. Supervision was reconverged for all three
 carries and the pinned read-only branch check passed against the newer
 public Integration. AgentStart's concurrent local-main divergence was merged
 by its owner without losing the exact pin. No source checkout handoff remains.
+
+2026-09-25: Benchmarked macOS release profiles, selected thin LTO with eight
+codegen units, published the carry and Integration with exact-commit hosted
+branch gates, and released `codexnk-v0.1.5`. Both release archives passed
+verification. The shipping macOS build step improved by 25m 05s against
+v0.1.4; Linux build settings and v0.1.4 consumer installation/pins were left
+unchanged. Only workflow code changed; local `actionlint` and `just fmt` and
+hosted focused tests passed. No complete local Rust suite was run.
