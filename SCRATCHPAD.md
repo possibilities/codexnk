@@ -128,6 +128,8 @@ candidate passed all seven local and hosted focused checks. Public mirror,
 Integration and the two declared carries moved in one atomic leased push;
 v0.1.3 released and the verified macOS binary and consumer pins were installed
 without process restarts. A separate runtime-companions cycle then advanced
-public Integration and created a third carry. Final local branch-model
-reconciliation and workshop publication must be coordinated with that cycle;
-do not overwrite or recapture its public refs for this one.
+public Integration and created a third carry. Local mirror and Integration
+were bound to the published heads, and pinned read-only branch reconciliation
+passed, classifying the new carry as `KEEP-OTHER`. No second remote apply was
+run against the concurrent publication; that carry's owner will update the
+declared branch model in its own cycle.
