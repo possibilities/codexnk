@@ -5,13 +5,21 @@
 - Captured upstream `main`: `e154f7b80789b742b162cf0e44de0bc021068a20`.
 - Public `main` mirrors that commit. `carry/invocation-axes` is
   `154c48569b4df5e4319b55f7745461d37fee2a23`; `carry/input-middleware`
-  is `0f8797fbbe3103e0edb8c9d951c22e20fe310e26`. Both were published
+-  is `0f8797fbbe3103e0edb8c9d951c22e20fe310e26`. Both were published
   atomically with Integration `7d341030af1c243eeb334294be31aeb3c58d233c`.
-  A concurrent, later runtime-companions carry
-  `7939215687df51e24d39662507d4e392a3856211` advanced public
-  Integration to `f2905ff011ff8fda607e91dfdd8f13b6083b1642` after the
-  v0.1.3 tag; that newer commit contains the v0.1.3 source commit. The public
-  default branch remains `integration`.
+  `carry/runtime-companions` at `7939215687df51e24d39662507d4e392a3856211`
+  advanced public Integration to `f2905ff011ff8fda607e91dfdd8f13b6083b1642`;
+  all three carries are ancestors. The public default branch remains `integration`.
+- `codexnk-v0.1.4` points at `f2905ff011ff8fda607e91dfdd8f13b6083b1642`.
+  [Branch CI 36074724963](https://github.com/possibilities/codexnk-codex/actions/runs/36074724963)
+  and [tag workflow 36076524505](https://github.com/possibilities/codexnk-codex/actions/runs/36076524505)
+  passed. Both published archives passed tag, asset digest/size, exact package
+  members, executable modes, and metadata verification. An isolated macOS
+  installation used the published release and its code-mode `exec` read and
+  counted a temporary file in the AgentStack Bot cwd through a local mock
+  Responses provider. The isolated installation and fixture were removed.
+  AgentStart and AgentStack remain pinned to v0.1.3 pending their coordinated
+  consumer update; no live Bot or owner process was restarted.
 - `codexnk-v0.1.3` points at `7d341030af1c243eeb334294be31aeb3c58d233c`.
   Release workflow [36062064372](https://github.com/possibilities/codexnk-codex/actions/runs/36062064372)
   succeeded; both published archives passed tag, digest, size, and structure
@@ -97,6 +105,24 @@
   pass-through observation UI remain; actual command-routing policy follows
   later.
 
+## Carry: runtime companions
+
+- Exact carry `7939215687df51e24d39662507d4e392a3856211` is based on the
+  previous captured upstream `main` and merged into Integration at
+  `f2905ff011ff8fda607e91dfdd8f13b6083b1642` on top of the v0.1.3
+  release source. The release workflow builds `codex` and
+  `codex-code-mode-host` together and bundles digest-bound `bwrap` on Linux.
+- The package-layout metadata makes Codex find the host beside the versioned
+  executable even when launched through the public symlink. The workshop's v2
+  receipt records every required file; installation rejects missing, redirected,
+  non-executable or altered companions. A verified v1 binary-only installation
+  remains an upgrade source but cannot be reused as a complete v2 package.
+- `python3 tests/install.py` passed 17 cases; `actionlint` and `just fmt`
+  passed. Hosted branch and tag focused tests passed, as did both tagged release
+  builds and archive verification. The published macOS release passed an
+  isolated code-mode file-read/count smoke in the Bot cwd. No task-owned Rust
+  build caches were created locally. A complete local `just test` was not run.
+
 ## Cycle history
 
 2026-09-23: Reviewed the complete 138-commit interval above. Dispositions:
@@ -132,4 +158,11 @@ public Integration and created a third carry. Local mirror and Integration
 were bound to the published heads, and pinned read-only branch reconciliation
 passed, classifying the new carry as `KEEP-OTHER`. No second remote apply was
 run against the concurrent publication; that carry's owner will update the
-declared branch model in its own cycle.
+  declared branch model in its own cycle.
+
+2026-09-25: Published the runtime-companions carry and v0.1.4 release after
+the v0.1.3 cycle. The release corrects the missing code-mode host and includes
+the Linux sandbox companion. The workshop installer and branch declaration
+were updated for receipt-verified runtime packages and an isolated release
+smoke. AgentStart and AgentStack need a coordinated exact tag/SHA pin update
+and private installation before an independently authorized Bot restart.
