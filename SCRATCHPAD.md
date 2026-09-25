@@ -4,12 +4,16 @@
 
 - Captured upstream `main`: `e154f7b80789b742b162cf0e44de0bc021068a20`.
 - Public `main` mirrors that commit. `carry/invocation-axes` is
-  `154c48569b4df5e4319b55f7745461d37fee2a23`; `carry/input-middleware`
-  is `0f8797fbbe3103e0edb8c9d951c22e20fe310e26`. Both were published
-  atomically with Integration `7d341030af1c243eeb334294be31aeb3c58d233c`.
+  `1548dae6870d8c5c08dd3676aa8210041cf48f29` after a workflow-only
+  release-benchmark follow-up; `carry/input-middleware`
+  is `0f8797fbbe3103e0edb8c9d951c22e20fe310e26`. Its tip and the
+  invocation-axes behavioral commit were published atomically with Integration
+  `7d341030af1c243eeb334294be31aeb3c58d233c`.
   `carry/runtime-companions` at `7939215687df51e24d39662507d4e392a3856211`
-  advanced public Integration to `f2905ff011ff8fda607e91dfdd8f13b6083b1642`;
-  all three carries are ancestors. The public default branch remains `integration`.
+  advanced public Integration to `f2905ff011ff8fda607e91dfdd8f13b6083b1642`.
+  The benchmark follow-up advanced public Integration again to
+  `5d44a627096a1f7dadcdd0476165030f89a8ad40`; all three carries are
+  ancestors. The public default branch remains `integration`.
 - `codexnk-v0.1.4` points at `f2905ff011ff8fda607e91dfdd8f13b6083b1642`.
   [Branch CI 36074724963](https://github.com/possibilities/codexnk-codex/actions/runs/36074724963)
   and [tag workflow 36076524505](https://github.com/possibilities/codexnk-codex/actions/runs/36076524505)
@@ -18,8 +22,15 @@
   installation used the published release and its code-mode `exec` read and
   counted a temporary file in the AgentStack Bot cwd through a local mock
   Responses provider. The isolated installation and fixture were removed.
-  AgentStart and AgentStack remain pinned to v0.1.3 pending their coordinated
-  consumer update; no live Bot or owner process was restarted.
+  The verified v2 package was installed at `~/.local/libexec/codexnk/codex`
+  with an exact ownership receipt, retaining the separately installed vendor
+  binary and previous releases. AgentStart origin/main
+  `03e161c5d0dedccfd4dae99f487483cc2eb7c830` and AgentStack origin/main
+  `4fabd6d968a57ed1226ebfe2c778d908f40e088b` pin this tag/SHA.
+  AgentStart's bound local `main` has a separate unpushed Devin commit and
+  has not yet merged the remote pin; do not run its full installer from that
+  checkout until the two commits are reconciled. No live Bot or owner process
+  was restarted.
 - `codexnk-v0.1.3` points at `7d341030af1c243eeb334294be31aeb3c58d233c`.
   Release workflow [36062064372](https://github.com/possibilities/codexnk-codex/actions/runs/36062064372)
   succeeded; both published archives passed tag, digest, size, and structure
@@ -60,9 +71,10 @@
 
 ## Carry: invocation axes
 
-- Exact carry commit: `154c48569b4df5e4319b55f7745461d37fee2a23`,
-  based on the captured upstream target and an ancestor of published
-  Integration `7d341030af1c243eeb334294be31aeb3c58d233c`. Historical
+- Current carry tip `1548dae6870d8c5c08dd3676aa8210041cf48f29`
+  adds release build timings and a macOS LTO benchmark to behavioral commit
+  `154c48569b4df5e4319b55f7745461d37fee2a23`. Both are based on the
+  captured upstream target and ancestors of public Integration. Historical
   upstream reference: `40eeb6e8a89ef421c25d4c40e06fa1d40ce66b4f`.
 - Disposition: **repair**. The launch split remains necessary. The carry now
   excludes home-level skill and personal marketplace discovery while retaining
@@ -164,5 +176,9 @@ declared branch model in its own cycle.
 the v0.1.3 cycle. The release corrects the missing code-mode host and includes
 the Linux sandbox companion. The workshop installer and branch declaration
 were updated for receipt-verified runtime packages and an isolated release
-smoke. AgentStart and AgentStack need a coordinated exact tag/SHA pin update
-and private installation before an independently authorized Bot restart.
+smoke. The exact tag/SHA consumer pins were subsequently published to
+AgentStart and AgentStack, and the verified v2 package was installed without
+restarting active processes. Supervision was reconverged for all three
+carries and the pinned read-only branch check passed against the newer
+public Integration. AgentStart's local-main divergence is the remaining
+source checkout handoff; its remote pin and the live binary are current.
