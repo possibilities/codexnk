@@ -24,13 +24,12 @@
   Responses provider. The isolated installation and fixture were removed.
   The verified v2 package was installed at `~/.local/libexec/codexnk/codex`
   with an exact ownership receipt, retaining the separately installed vendor
-  binary and previous releases. AgentStart origin/main
-  `03e161c5d0dedccfd4dae99f487483cc2eb7c830` and AgentStack origin/main
-  `4fabd6d968a57ed1226ebfe2c778d908f40e088b` pin this tag/SHA.
-  AgentStart's bound local `main` has a separate unpushed Devin commit and
-  has not yet merged the remote pin; do not run its full installer from that
-  checkout until the two commits are reconciled. No live Bot or owner process
-  was restarted.
+  binary and previous releases. AgentStart pin commit
+  `03e161c5d0dedccfd4dae99f487483cc2eb7c830` and AgentStack main
+  `4fabd6d968a57ed1226ebfe2c778d908f40e088b` select this tag/SHA.
+  AgentStart's bound and remote main now both include its separate Devin
+  commit and the pin at `dacaecf4d626de7bca2c659b752d9f919bf670ac`.
+  No live Bot or owner process was restarted.
 - `codexnk-v0.1.3` points at `7d341030af1c243eeb334294be31aeb3c58d233c`.
   Release workflow [36062064372](https://github.com/possibilities/codexnk-codex/actions/runs/36062064372)
   succeeded; both published archives passed tag, digest, size, and structure
@@ -180,5 +179,5 @@ smoke. The exact tag/SHA consumer pins were subsequently published to
 AgentStart and AgentStack, and the verified v2 package was installed without
 restarting active processes. Supervision was reconverged for all three
 carries and the pinned read-only branch check passed against the newer
-public Integration. AgentStart's local-main divergence is the remaining
-source checkout handoff; its remote pin and the live binary are current.
+public Integration. AgentStart's concurrent local-main divergence was merged
+by its owner without losing the exact pin. No source checkout handoff remains.
