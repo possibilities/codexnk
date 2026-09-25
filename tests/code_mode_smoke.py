@@ -29,7 +29,9 @@ def main():
     parser.add_argument("--bin", type=Path, required=True)
     parser.add_argument("--cwd", type=Path, required=True)
     args = parser.parse_args()
-    binary = args.bin.resolve()
+    # Preserve the public symlink: resolving it here would miss regressions in
+    # Codex's companion lookup when consumers launch the installed entrypoint.
+    binary = args.bin.absolute()
     cwd = args.cwd.resolve()
     if not binary.is_file() or not cwd.is_dir():
         parser.error("--bin must be a file and --cwd must be a directory")
