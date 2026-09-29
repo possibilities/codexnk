@@ -23,7 +23,7 @@
   profile retains thin LTO and uses eight codegen units; Linux is unchanged.
   The macOS tag build step took 81m 44s versus v0.1.4's 106m 49s (25m 05s,
   about 23% faster). The separately dispatched codegen-8 benchmark took
-  65m 36s. No installed package or AgentStart/AgentStack consumer pin was
+  65m 36s. No installed package or AgentStart/Stack consumer pin was
   advanced from v0.1.4 as part of this release-speed experiment.
 - `codexnk-v0.1.4` points at `f2905ff011ff8fda607e91dfdd8f13b6083b1642`.
   [Branch CI 36074724963](https://github.com/possibilities/codexnk-codex/actions/runs/36074724963)
@@ -31,12 +31,12 @@
   passed. Both published archives passed tag, asset digest/size, exact package
   members, executable modes, and metadata verification. An isolated macOS
   installation used the published release and its code-mode `exec` read and
-  counted a temporary file in the AgentStack Bot cwd through a local mock
+  counted a temporary file in the Stack Bot cwd through a local mock
   Responses provider. The isolated installation and fixture were removed.
   The verified v2 package was installed at `~/.local/libexec/codexnk/codex`
   with an exact ownership receipt, retaining the separately installed vendor
   binary and previous releases. AgentStart pin commit
-  `03e161c5d0dedccfd4dae99f487483cc2eb7c830` and AgentStack main
+  `03e161c5d0dedccfd4dae99f487483cc2eb7c830` and Stack main
   `4fabd6d968a57ed1226ebfe2c778d908f40e088b` select this tag/SHA.
   AgentStart's bound and remote main now both include its separate Devin
   commit and the pin at `dacaecf4d626de7bca2c659b752d9f919bf670ac`.
@@ -44,11 +44,11 @@
 - `codexnk-v0.1.3` points at `7d341030af1c243eeb334294be31aeb3c58d233c`.
   Release workflow [36062064372](https://github.com/possibilities/codexnk-codex/actions/runs/36062064372)
   succeeded; both published archives passed tag, digest, size, and structure
-  verification. An isolated macOS install passed the AgentStack middleware
+  verification. An isolated macOS install passed the Stack middleware
   smoke, then the verified release was installed at
   `~/.local/libexec/codexnk/codex` on 2026-09-24 with a matching ownership
   receipt. Installed-binary runtime and WebSocket middleware tests passed.
-  AgentStart `104e611b7170e1190ace5c9ee50e98b3db13f844` and AgentStack
+  AgentStart `104e611b7170e1190ace5c9ee50e98b3db13f844` and Stack
   `4015bec95d52b6821f328413c49eb15a290dec20` pin that tag/SHA; neither
   an owner nor running Bots were restarted.
 - The previous release `codexnk-v0.1.2` points at
@@ -124,7 +124,7 @@
   app-server WebSocket-owner, restart/receipt and realtime handoff checks all
   passed, as did hosted Integration and tag CI and the installed release smoke.
   A complete local `just test` was not practical within disk capacity.
-  AgentStack's host-side client and optional
+  Stack's host-side client and optional
   pass-through observation UI remain; actual command-routing policy follows
   later.
 
@@ -183,7 +183,7 @@ No `DELETEME/*` marker affects this cycle.
 
 2026-09-24: Published the separate input-middleware carry and merged it into
 Integration, verified `codexnk-v0.1.2` on both platforms, and activated the
-aligned AgentStart/AgentStack pins without restarting any resident Codex
+aligned AgentStart/Stack pins without restarting any resident Codex
 process. The local feature/build worktrees and their task-owned Rust caches
 were removed after verification. The integration/workflow push used the
 available SSH credential because the HTTPS OAuth token lacked workflow scope;
@@ -210,7 +210,7 @@ the v0.1.3 cycle. The release corrects the missing code-mode host and includes
 the Linux sandbox companion. The workshop installer and branch declaration
 were updated for receipt-verified runtime packages and an isolated release
 smoke. The exact tag/SHA consumer pins were subsequently published to
-AgentStart and AgentStack, and the verified v2 package was installed without
+AgentStart and Stack, and the verified v2 package was installed without
 restarting active processes. Supervision was reconverged for all three
 carries and the pinned read-only branch check passed against the newer
 public Integration. AgentStart's concurrent local-main divergence was merged
