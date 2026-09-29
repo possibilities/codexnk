@@ -4,16 +4,16 @@
 
 - Captured upstream `main`: `e154f7b80789b742b162cf0e44de0bc021068a20`.
 - Public `main` mirrors that commit. `carry/invocation-axes` is
-  `e505b098a6f221a58159cf6a97b60c8669fcc976` after the measured
-  macOS release-build optimization; `carry/input-middleware`
-  is `0f8797fbbe3103e0edb8c9d951c22e20fe310e26`. Its tip and the
-  invocation-axes behavioral commit were published atomically with Integration
-  `7d341030af1c243eeb334294be31aeb3c58d233c`.
-  `carry/runtime-companions` at `7939215687df51e24d39662507d4e392a3856211`
-  advanced public Integration to `f2905ff011ff8fda607e91dfdd8f13b6083b1642`.
-  The release-speed follow-up advanced public Integration to
-  `f88f7d781ea78ed65fbb9f65d110ee3e4b280323`; all three carries are
-  ancestors. The public default branch remains `integration`.
+  `02f19c94dca76710a5857ddb30c697b30819a119`; `carry/input-middleware`
+  is `0f8797fbbe3103e0edb8c9d951c22e20fe310e26`; and
+  `carry/runtime-companions` is `7939215687df51e24d39662507d4e392a3856211`.
+  Public and local Integration are
+  `7ffcc693c1ac3e19b688aedea2fb4b2a6afc124f`, with all three carries as
+  ancestors. This already-published follow-up restored the compact macOS
+  release profile after v0.1.5; it was discovered during the 2026-09-29 cycle,
+  not published by that cycle. [Integration CI 36181531537](https://github.com/possibilities/codexnk-codex/actions/runs/36181531537)
+  and [carry CI 36179188424](https://github.com/possibilities/codexnk-codex/actions/runs/36179188424)
+  passed. The public default branch remains `integration`.
 - `codexnk-v0.1.5` points at `f88f7d781ea78ed65fbb9f65d110ee3e4b280323`.
   [Integration CI 36100034582](https://github.com/possibilities/codexnk-codex/actions/runs/36100034582),
   [carry CI 36100034795](https://github.com/possibilities/codexnk-codex/actions/runs/36100034795),
@@ -64,6 +64,70 @@
   `7bccdfb0e871681472ff9c9e2a160c4e1d479453`; before the v0.1.1 cycle,
   public `main` and its carry were `f832ae88f82a5aed86a072556e753bd253f11619`.
 
+## Blocked maintenance attempt: 2026-09-29
+
+- Immutable upstream target: `b1e72963c3b71a9265a551e54beff078384efed9`.
+  Captured all public heads before fetching that exact upstream object once.
+  Read the full messages for the
+  [215-commit interval](https://github.com/openai/codex/compare/e154f7b80789b742b162cf0e44de0bc021068a20...b1e72963c3b71a9265a551e54beff078384efed9)
+  and inspected carry interactions. Groups include GPT-6.1 Sol as the default
+  catalog model and GPT-5.4 removal; instant input preemption and WebSocket
+  continuation; enterprise MCP authentication and policy refresh; cached MCP,
+  plugin and skill discovery; Guardian context and remote message boards;
+  history/SQLite performance, sandbox fixes, and TUI copy/reconnect/rendering.
+  No single release note covers this interval. Audit closure remains pending
+  the credential-boundary review; the audited frontier below is unchanged.
+- Working dispositions: **0 retire, 2 repair, 1 unchanged**. Invocation axes
+  needs the home-exclusion bit in upstream's new explicit config equality and
+  refresh paths, plus the home filter around cached marketplace discovery.
+  Those source adaptations are committed in the task carry. Input middleware's
+  Core gate remains before native start/steer and upstream's new accepted-turn
+  trace; that source conflict is resolved. Runtime-companion packaging replays
+  unchanged. No material change to downstream-only stance or `MAINTAIN.md`.
+- Further required invocation-axes review: upstream
+  [`4994306e9f80448bde85e770a0b0c93d3fee5665`](https://github.com/openai/codex/commit/4994306e9f80448bde85e770a0b0c93d3fee5665)
+  enables enterprise sign-in and account-logout grant cleanup. The new
+  app-server paths call `EnterpriseOAuthCredentialGuard`, whose deletion and
+  login commit use `OAuthCredentialsStoreMode::Keyring` directly, bypassing
+  the private runtime's file-only setting. Logout cleanup is not gated by
+  `use_xaa`; a signed-in workspace with managed IdP policy can reach it.
+  Enterprise credential rereads also require a keyring-backed snapshot.
+  Preserve file-only three-axis isolation when repairing this interaction;
+  changing only ordinary OAuth configuration is insufficient. The independent
+  review was cancelled during the interrupted session and supplied no result.
+- Blocker: `/Volumes/Scratch` is unmounted. Both `~/.rustup` and `~/.cargo`
+  are symlinks into that volume. `just write-app-server-schema` failed before
+  compilation with `could not create home directory: '/Users/arthack/.rustup':
+  File exists (os error 17)`. `just fmt` in both modified carry worktrees failed
+  at Rust formatting for the same reason; other formatter groups passed.
+  `actionlint` and committed-diff whitespace checks passed for invocation axes
+  and runtime companions. No focused Rust gate, full suite, or release gate
+  passed; no Integration candidate has been composed.
+- Retained worktrees under `~/worktrees/codexnk/maintain-20260929/`:
+  `invocation-axes` on `carry/cycle-20260929-invocation-axes` at
+  `6a7ffa904888a9b5f2836e726334ccef0dd36359`; `runtime-companions` on
+  `carry/cycle-20260929-runtime-companions` at
+  `c8ec723729b001d4f40232df5d249c90ffa5aa2d`; `input-middleware` is mid-rebase
+  on `carry/cycle-20260929-input-middleware`, detached at
+  `ccac492e777aac236d11d24ab250fb1ee23bfaff`. Only the two precomputed
+  protocol `.json.zst` bundles remain conflicted. Regenerate stable and
+  experimental exports before continuing that rebase. The `integration`
+  worktree remains at the captured upstream target.
+- Leases, upstream fetch receipt, interval inventory, failed schema log and
+  final read-only reconciliation are retained in
+  `/private/var/folders/9g/l0rgs8rs2_9__kqn0smr9tnh0000gp/T/opencode/codexnk-maintain-20260929-vutj0aww/`.
+  The workshop's pre-existing installer bytecode cache was preserved there
+  as `preexisting-installer-pycache` to establish a clean workshop. No Rust
+  build cache was created; disposable formatter virtual environments were
+  removed from the owned worktrees.
+- Publication targets were re-read and match the starting leases. The pinned
+  read-only branch check passed, retaining ten other public heads. Supervision
+  had the old `~/code/codexnk` path; the declared entrypoint reconverged it to
+  `~/workshops/codexnk` and `--check-supervision` passed. No branch apply was run.
+  The installed v0.1.4 package passed its per-file ownership hashes, modes and
+  metadata checks; AgentStart still pins its exact tag/SHA. Public refs,
+  release tags and consumer bindings retain the delivered baseline above.
+
 ## Audited upstream frontier
 
 - Complete through `e154f7b80789b742b162cf0e44de0bc021068a20` on
@@ -81,11 +145,12 @@
 
 ## Carry: invocation axes
 
-- Current carry tip `e505b098a6f221a58159cf6a97b60c8669fcc976`
-  adds release build timings, non-publishing macOS profile benchmarks, and
-  eight codegen units for the shipping macOS build to behavioral commit
-  `154c48569b4df5e4319b55f7745461d37fee2a23`. The carry is based on the
-  captured upstream target and is an ancestor of public Integration. Historical
+- Current published carry tip `02f19c94dca76710a5857ddb30c697b30819a119`
+  restores the compact upstream release profile after the eight-codegen-unit
+  experiment, retaining release timings and non-publishing profile benchmarks.
+  Its behavioral commit is `154c48569b4df5e4319b55f7745461d37fee2a23`.
+  The carry is based on the delivered upstream baseline and is an ancestor
+  of public Integration. Historical
   upstream reference: `40eeb6e8a89ef421c25d4c40e06fa1d40ce66b4f`.
 - Disposition: **repair**. The launch split remains necessary. The carry now
   excludes home-level skill and personal marketplace discovery while retaining
@@ -109,8 +174,8 @@
 ## Carry: input middleware
 
 - Exact carry `0f8797fbbe3103e0edb8c9d951c22e20fe310e26` is based on the
-  captured upstream `main`. Its generated stable and experimental protocol
-  exports were regenerated after replay. Integration is at
+  delivered upstream `main`. Its generated stable and experimental protocol
+  exports were regenerated after replay. It was first integrated at
   `7d341030af1c243eeb334294be31aeb3c58d233c`.
 - An explicit app-server WebSocket owner handles direct typed text and
   finalized realtime handoffs with `pass`, `replace` or `intercept`; no owner
@@ -223,3 +288,13 @@ verification. The shipping macOS build step improved by 25m 05s against
 v0.1.4; Linux build settings and v0.1.4 consumer installation/pins were left
 unchanged. Only workflow code changed; local `actionlint` and `just fmt` and
 hosted focused tests passed. No complete local Rust suite was run.
+
+2026-09-29: Captured `b1e72963c3b71a9265a551e54beff078384efed9` and reviewed
+the 215-commit interval from the audited frontier. Prepared invocation-axes and
+runtime-companion replays and resolved the input gate's source conflict.
+Schema regeneration and Rust formatting are blocked by the unmounted Scratch
+volume. The new enterprise login/logout keyring path needs an isolation repair
+and completed review before candidate gating. No fork publication or consumer
+handover occurred; the audited frontier remains at the previous completed
+audit. Recorded the previously published compact-profile rollback, verified
+the retained installed package, and corrected the derived supervision path.
