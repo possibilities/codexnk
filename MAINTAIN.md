@@ -68,6 +68,17 @@ release binary; AgentStart selects it through its managed shim.
   in the private runtime, not imported from the operator's `~/.codex`. CLI auth
   and MCP OAuth credentials for the process are stored in files under the runtime
   home, not the OS keyring.
+- Enterprise MCP authentication is unavailable in three-axis mode while upstream
+  requires keyring-backed enterprise grants. Enterprise sign-in is explicitly
+  rejected and account logout does not access or clean up enterprise keyring
+  grants. Ordinary MCP OAuth remains available through private runtime files.
+  Config refresh and agent-role application retain these launch restrictions.
+  A managed credential-storage requirement incompatible with file-only identity
+  fails the scoped launch rather than replacing that policy.
+- Model-provider gateway OAuth is likewise unavailable in three-axis mode while
+  its upstream storage requires keyring authority. Selecting such a provider at
+  launch or for a thread is rejected; unused gateway provider definitions do not
+  prevent ordinary provider selection.
 - `--history-dir` supplies `sessions/` and `archived_sessions/`. Separate
   processes using the same history directory and different identity or
   capability directories append to that same session store.
@@ -118,7 +129,7 @@ workflows copied with the tree are disabled there. OpenAI's own CI covers
 code this patch does not change.
 
 On `integration`, the workflow runs the focused checks below. The
-`carry/invocation-axes` branch runs the first four checks; the
+`carry/invocation-axes` branch runs the first six checks; the
 `carry/input-middleware` and `carry/runtime-companions` heads are gated as
 ancestors of Integration, since they do not run Integration's full check set
 on their upstream-based trees.
@@ -128,6 +139,8 @@ just test -p codex-cli invocation_axes
 just test -p codex-config scoped_capabilities_keep_trusted_project_mcp_without_home_config
 just test -p codex-skills-extension scoped_capabilities_keep_project_skills_without_home_skills
 just test -p codex-core-plugins scoped_capabilities_omit_home_marketplace_but_keep_project_marketplace
+just test -p codex-core invocation_axes
+just test -p codex-app-server invocation_axes
 just test -p codex-app-server-protocol
 just test -p codex-app-server input_middleware
 just test -p codex-app-server realtime_handoff_is_intercepted_before_working_turn

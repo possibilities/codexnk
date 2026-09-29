@@ -14,6 +14,12 @@
   not published by that cycle. [Integration CI 36181531537](https://github.com/possibilities/codexnk-codex/actions/runs/36181531537)
   and [carry CI 36179188424](https://github.com/possibilities/codexnk-codex/actions/runs/36179188424)
   passed. The public default branch remains `integration`.
+- `codexnk-v0.1.6` also points at `7ffcc693c1ac3e19b688aedea2fb4b2a6afc124f`.
+  The [release](https://github.com/possibilities/codexnk-codex/releases/tag/codexnk-v0.1.6)
+  was published on 2026-09-25 with both runtime archives; its existence was
+  omitted from the earlier scratchpad. This cycle discovered it during tag
+  selection and has not reverified those archives. The next unused patch tag
+  for the maintenance candidate is `codexnk-v0.1.7`.
 - `codexnk-v0.1.5` points at `f88f7d781ea78ed65fbb9f65d110ee3e4b280323`.
   [Integration CI 36100034582](https://github.com/possibilities/codexnk-codex/actions/runs/36100034582),
   [carry CI 36100034795](https://github.com/possibilities/codexnk-codex/actions/runs/36100034795),
@@ -64,7 +70,7 @@
   `7bccdfb0e871681472ff9c9e2a160c4e1d479453`; before the v0.1.1 cycle,
   public `main` and its carry were `f832ae88f82a5aed86a072556e753bd253f11619`.
 
-## Blocked maintenance attempt: 2026-09-29
+## Maintenance cycle blocked after local gates: 2026-09-29
 
 - Immutable upstream target: `b1e72963c3b71a9265a551e54beff078384efed9`.
   Captured all public heads before fetching that exact upstream object once.
@@ -75,15 +81,17 @@
   continuation; enterprise MCP authentication and policy refresh; cached MCP,
   plugin and skill discovery; Guardian context and remote message boards;
   history/SQLite performance, sandbox fixes, and TUI copy/reconnect/rendering.
-  No single release note covers this interval. Audit closure remains pending
-  the credential-boundary review; the audited frontier below is unchanged.
+  No single release note covers this interval. Independent reviews are complete;
+  the credential-boundary repairs are reviewed and verified. All nine required
+  exact-candidate gates passed. Full-suite triage is blocked by Scratch becoming
+  unmounted again; publication and delivery remain pending.
 - Working dispositions: **0 retire, 2 repair, 1 unchanged**. Invocation axes
   needs the home-exclusion bit in upstream's new explicit config equality and
   refresh paths, plus the home filter around cached marketplace discovery.
   Those source adaptations are committed in the task carry. Input middleware's
   Core gate remains before native start/steer and upstream's new accepted-turn
   trace; that source conflict is resolved. Runtime-companion packaging replays
-  unchanged. No material change to downstream-only stance or `MAINTAIN.md`.
+  unchanged. The downstream-only contribution stance is unchanged.
 - Further required invocation-axes review: upstream
   [`4994306e9f80448bde85e770a0b0c93d3fee5665`](https://github.com/openai/codex/commit/4994306e9f80448bde85e770a0b0c93d3fee5665)
   enables enterprise sign-in and account-logout grant cleanup. The new
@@ -93,35 +101,124 @@
   `use_xaa`; a signed-in workspace with managed IdP policy can reach it.
   Enterprise credential rereads also require a keyring-backed snapshot.
   Preserve file-only three-axis isolation when repairing this interaction;
-  changing only ordinary OAuth configuration is insufficient. The independent
-  review was cancelled during the interrupted session and supplied no result.
-- Blocker: `/Volumes/Scratch` is unmounted. Both `~/.rustup` and `~/.cargo`
+  changing only ordinary OAuth configuration is insufficient. The resumed
+  independent review confirmed those paths and found marker loss when rebuilding
+  retained-session and agent-role config stacks. It also found that runtime-file
+  credential settings were defaults rather than enforced launch restrictions.
+- The operator approved rejecting keyring-only enterprise MCP authentication in
+  three-axis mode, with ordinary file-backed OAuth retained. `MAINTAIN.md` now
+  states this exception. No-flags launches retain stock enterprise behavior.
+  The operator also authorized a complete `just test` attempt after focused
+  gates pass. This is a material narrowing of scoped enterprise support; actual
+  file-backed enterprise support remains a future upstream replacement opportunity.
+- A further source review found pre-existing model-provider gateway OAuth also
+  uses keyring authority independently of ordinary credential modes. The operator
+  approved rejecting a selected gateway-OAuth provider in three-axis mode;
+  unused provider definitions and no-flags behavior remain available. This is a
+  related existing credential-isolation defect, not a new upstream accommodation.
+  Source repair `293b5e9b89` closes all concrete credential-review findings,
+  including the selected-provider gateway guard; the independent closure review
+  found no remaining defect in the patch. Regression commit `6925692ffc` reproduced
+  seven intended failures before the repair, including one counted keyring-access
+  attempt for each enterprise logout and unreadable identity after an ephemeral
+  credential override. The repair was applied to the invocation carry at
+  `7fec92c130`; all ten post-fix invocation-axis checks passed. The enterprise
+  API test counted zero keyring access attempts with XAA enabled and disabled;
+  the CLI launch test preserved source identity while removing runtime auth on
+  logout. Scoped `just fix` passed; its three unrelated upstream unused-import
+  edits were restored. Final formatting, workflow lint and diff whitespace checks
+  passed. Candidate `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c` is frozen.
+- Initial blocker: `/Volumes/Scratch` was unmounted. Both `~/.rustup` and `~/.cargo`
   are symlinks into that volume. `just write-app-server-schema` failed before
   compilation with `could not create home directory: '/Users/arthack/.rustup':
   File exists (os error 17)`. `just fmt` in both modified carry worktrees failed
   at Rust formatting for the same reason; other formatter groups passed.
   `actionlint` and committed-diff whitespace checks passed for invocation axes
-  and runtime companions. No focused Rust gate, full suite, or release gate
-  passed; no Integration candidate has been composed.
+  and runtime companions. This initial blocker was resolved after Scratch mounted.
+- Resumed after the operator mounted Scratch. Rust 1.95.0 is available and all
+  five publication targets still match the original leases. Scratch has 153 GiB
+  free; the cycle-owned Cargo target is
+  `/Volumes/Scratch/codexnk-maintain-20260929-vutj0aww-target`.
+  Stable and experimental protocol generation passed; the middleware rebase
+  finished at `b3705e387f`. Middleware and runtime-companion `just fmt` passed.
+  Independent middleware review found no actionable upstream-induced regression:
+  interception precedes native input queueing and instant preemption, while the
+  new trace records only accepted turns.
+  The regenerated middleware protocol passed all 314 tests (one ignored writer).
+  An initial regression compile exposed an ambiguous assertion import; the
+  corrected baseline run also includes credential overrides and selected-gateway
+  coverage. The additional owned `credential-repair` worktree retains the reviewed
+  source commit. Workflow conflict resolution retains runtime companions, compact
+  release profiles, timing artifacts and read-only benchmarks, and adds the two
+  new scoped-auth/config regression gates. All nine exact-candidate focused gates
+  passed via the evidence directory's `run-candidate-gates.py`. The authorized
+  complete `just test` finished with 20,959 passed, nine failed, four timed out,
+  and 66 skipped (20,972 run). Receipts and per-command logs are retained there.
+- The 13 full-suite failures/timeouts were rerun serially with canonical
+  `TMPDIR`. All four daemon timeouts then passed; the nine failures persisted.
+  Bounded independent read-only reviews identified:
+  - Four worktree fixtures inherit the host's global `.codex` Git ignore rule.
+    CLI/TUI fixtures silently fail to commit their destination config; exec's
+    explicit `git add .codex/config.toml` reports that it is ignored. The owner
+    binding assertions passed before these failures. A focused retry should set
+    `GIT_CONFIG_COUNT=1`, `GIT_CONFIG_KEY_0=core.excludesFile`, and
+    `GIT_CONFIG_VALUE_0=/dev/null` for the invocation, leaving host config intact.
+  - The skills snapshot has three extra MCP resource tools after executor
+    readiness. All catalog retention assertions before the snapshot passed.
+    The upstream fixture's real executor reads process-level Codex configuration;
+    ambient HTTP MCP configuration is the likely cause. Compare the original
+    environment with an existing empty temporary `CODEX_HOME` on both revisions.
+  - V8's proof-of-concept test expects its disabled crate-level sandbox feature
+    to match the sandbox-enabled linked V8 archive. Three voice-host WebRTC/RTP
+    tests time out. Their source and dependency declarations are unchanged from
+    captured upstream; baseline execution is still needed to close triage.
+  The full-suite compilation log records candidate `integration` paths for Core
+  and test support; the skills snapshot writer reports the sibling invocation
+  worktree path. Preserve that provenance detail when comparing baseline results.
+- An additional owned `upstream-baseline` worktree is pinned at captured
+  `b1e72963c3b71a9265a551e54beff078384efed9`. Its nine-case comparison could not
+  start: Rust reported `could not create home directory: '/Users/arthack/.rustup':
+  File exists (os error 17)`. `/Volumes` now contains only `Macintosh HD`;
+  `/Volumes/Scratch` is absent and both Rust-home symlinks are dangling again.
+  Remount Scratch before resuming. Do not fetch/reselect upstream or replace the
+  original publication leases. Retain the candidate, consumer worktrees and
+  cycle-owned cache for the remaining diagnosis and delivery.
+- Consumer preparation uses additional owned `agentstart` and `stack` worktrees.
+  AgentStart starts at `fa6ff5075cbde11010cf67a51a63481c2da4c809`; Stack starts
+  at local main `952ecb3fc04f7f352c66fa421e5cc7f9e5fe62b6`, seven commits ahead
+  of its public main `9ab415a6d4295e10f545ae324565e2704ed44092`. Preserve those
+  unrelated unpublished Stack commits when aligning its local consumer pin;
+  publishing them is not part of this cycle. Proposed v0.1.7/candidate pin changes
+  exist only in those task worktrees. Stack's updated settings-schema and Bots
+  checks passed (68 passed, two live-runtime tests skipped); its installer checks
+  passed all four cases after updating the exact-pin fixture. AgentStart validation
+  passed with canonical `TMPDIR` after an unrelated notification test compared
+  `/private/var` and `/var` spellings of the same temporary path. Prepared local
+  consumer commits are AgentStart `74fe5a3` and Stack `0ba88b3`; neither is landed.
+  The macOS V8 150.4.0 archive and bindings passed the repository-pinned manifest
+  checksum and both artifact checksums, ready for the focused build gates.
 - Retained worktrees under `~/worktrees/codexnk/maintain-20260929/`:
   `invocation-axes` on `carry/cycle-20260929-invocation-axes` at
-  `6a7ffa904888a9b5f2836e726334ccef0dd36359`; `runtime-companions` on
+  `73c2f483b8e9d64fdc7ea7ec8d9e54b2ed7ff624`; `runtime-companions` on
   `carry/cycle-20260929-runtime-companions` at
-  `c8ec723729b001d4f40232df5d249c90ffa5aa2d`; `input-middleware` is mid-rebase
-  on `carry/cycle-20260929-input-middleware`, detached at
-  `ccac492e777aac236d11d24ab250fb1ee23bfaff`. Only the two precomputed
-  protocol `.json.zst` bundles remain conflicted. Regenerate stable and
-  experimental exports before continuing that rebase. The `integration`
-  worktree remains at the captured upstream target.
+  `c8ec723729b001d4f40232df5d249c90ffa5aa2d`; `input-middleware` on
+  `carry/cycle-20260929-input-middleware` at
+  `b3705e387f2115b48351192a3394d8150e43e61d`; and `integration` at the frozen
+  candidate above. The `credential-repair`, `workshop`, `agentstart`, and `stack`
+  worktrees are also cycle-owned. All pre-existing release-speed worktrees remain.
+  The operator approved detaching the clean release-speed `codexnk-codex`
+  worktree at its existing `02f19c94dc` after successful publication, preserving
+  its files while freeing the declared local carry ref for reconciliation.
 - Leases, upstream fetch receipt, interval inventory, failed schema log and
   final read-only reconciliation are retained in
   `/private/var/folders/9g/l0rgs8rs2_9__kqn0smr9tnh0000gp/T/opencode/codexnk-maintain-20260929-vutj0aww/`.
   The workshop's pre-existing installer bytecode cache was preserved there
-  as `preexisting-installer-pycache` to establish a clean workshop. No Rust
-  build cache was created; disposable formatter virtual environments were
-  removed from the owned worktrees.
+  as `preexisting-installer-pycache` to establish a clean workshop. Rust build
+  artifacts are confined to the cycle-owned Scratch target above. Initial
+  disposable formatter environments were removed before resumption.
 - Publication targets were re-read and match the starting leases. The pinned
-  read-only branch check passed, retaining ten other public heads. Supervision
+  final read-only branch check passed, retaining eleven other public heads
+  (including a newly observed unrelated Rust-toolchain Dependabot branch). Supervision
   had the old `~/code/codexnk` path; the declared entrypoint reconverged it to
   `~/workshops/codexnk` and `--check-supervision` passed. No branch apply was run.
   The installed v0.1.4 package passed its per-file ownership hashes, modes and
@@ -298,3 +395,14 @@ and completed review before candidate gating. No fork publication or consumer
 handover occurred; the audited frontier remains at the previous completed
 audit. Recorded the previously published compact-profile rollback, verified
 the retained installed package, and corrected the derived supervision path.
+
+2026-09-29, resumed: Completed middleware schema regeneration, credential-boundary
+repairs and bounded independent reviews. The operator approved scoped enterprise
+MCP and gateway-OAuth rejection while storage is keyring-only, and authorized the
+complete suite. Candidate `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c` passed all
+nine required local gates. The full suite had nine failures and four timeouts;
+all timeouts passed serial rechecks, while failure isolation remains in progress.
+Scratch became unmounted again before the captured-upstream comparison could
+compile. No fork refs, release tags, installation or canonical consumer pins were
+advanced. Prepared consumer commits, owned worktrees and original leases remain
+for recovery; final pinned read-only reconciliation passed.
