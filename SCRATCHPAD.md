@@ -70,7 +70,7 @@
   `7bccdfb0e871681472ff9c9e2a160c4e1d479453`; before the v0.1.1 cycle,
   public `main` and its carry were `f832ae88f82a5aed86a072556e753bd253f11619`.
 
-## Maintenance cycle blocked after local gates: 2026-09-29
+## Maintenance cycle in progress on internal disk: 2026-09-29
 
 - Immutable upstream target: `b1e72963c3b71a9265a551e54beff078384efed9`.
   Captured all public heads before fetching that exact upstream object once.
@@ -83,8 +83,8 @@
   history/SQLite performance, sandbox fixes, and TUI copy/reconnect/rendering.
   No single release note covers this interval. Independent reviews are complete;
   the credential-boundary repairs are reviewed and verified. All nine required
-  exact-candidate gates passed. Full-suite triage is blocked by Scratch becoming
-  unmounted again; publication and delivery remain pending.
+  exact-candidate gates passed. Full-suite triage resumed on the internal disk
+  after two Scratch disconnections; publication and delivery remain pending.
 - Working dispositions: **0 retire, 2 repair, 1 unchanged**. Invocation axes
   needs the home-exclusion bit in upstream's new explicit config equality and
   refresh paths, plus the home filter around cached marketplace discovery.
@@ -180,9 +180,26 @@
   start: Rust reported `could not create home directory: '/Users/arthack/.rustup':
   File exists (os error 17)`. `/Volumes` now contains only `Macintosh HD`;
   `/Volumes/Scratch` is absent and both Rust-home symlinks are dangling again.
-  Remount Scratch before resuming. Do not fetch/reselect upstream or replace the
-  original publication leases. Retain the candidate, consumer worktrees and
-  cycle-owned cache for the remaining diagnosis and delivery.
+  This second disconnect led the operator to authorize moving work to the internal
+  disk and reclaiming disposable caches. Do not fetch/reselect upstream or replace
+  the original publication leases.
+- Internal storage is now
+  `/Users/arthack/Library/Caches/codexnk-maintain-20260929-vutj0aww/`.
+  It owns a copied Rust 1.95.0 toolchain, Cargo registry/Git sources, verified V8
+  artifacts, and a fresh targeted Cargo build directory. Process-local
+  `RUSTUP_HOME`, `CARGO_HOME`, and `CARGO_TARGET_DIR` are recorded in the evidence
+  directory's `internal-build-env.json`; `internal-rust.py` applies them and
+  checks for at least 8 GiB free before a build. Global Rust-home symlinks are
+  unchanged. Offline macOS Cargo metadata resolved 1,268 package manifests with
+  no Scratch paths. Internal free space was 30.36 GiB before rebuilding.
+  `run-internal-baseline.py` is running bounded baseline tests sequentially,
+  recording free space and command results between builds.
+- With the operator's cache-cleanup authorization, removed regenerable Bazel/Zig
+  caches, Homebrew download/pip caches, UV's cache, and four abandoned July/August/
+  September runtime-download staging directories with no open handles. Ran PNPM's
+  own store-prune command. Installed runtimes, active tools and repository source
+  were retained. Cleanup receipts are in the cycle evidence directory. The old
+  53 GiB Scratch target remains a recovery cache; it is not the active build path.
 - Consumer preparation uses additional owned `agentstart` and `stack` worktrees.
   AgentStart starts at `fa6ff5075cbde11010cf67a51a63481c2da4c809`; Stack starts
   at local main `952ecb3fc04f7f352c66fa421e5cc7f9e5fe62b6`, seven commits ahead
@@ -204,8 +221,9 @@
   `c8ec723729b001d4f40232df5d249c90ffa5aa2d`; `input-middleware` on
   `carry/cycle-20260929-input-middleware` at
   `b3705e387f2115b48351192a3394d8150e43e61d`; and `integration` at the frozen
-  candidate above. The `credential-repair`, `workshop`, `agentstart`, and `stack`
-  worktrees are also cycle-owned. All pre-existing release-speed worktrees remain.
+  candidate above. The `credential-repair`, `upstream-baseline`, `workshop`,
+  `agentstart`, and `stack` worktrees are also cycle-owned. All pre-existing
+  release-speed worktrees remain.
   The operator approved detaching the clean release-speed `codexnk-codex`
   worktree at its existing `02f19c94dc` after successful publication, preserving
   its files while freeing the declared local carry ref for reconciliation.
@@ -214,7 +232,7 @@
   `/private/var/folders/9g/l0rgs8rs2_9__kqn0smr9tnh0000gp/T/opencode/codexnk-maintain-20260929-vutj0aww/`.
   The workshop's pre-existing installer bytecode cache was preserved there
   as `preexisting-installer-pycache` to establish a clean workshop. Rust build
-  artifacts are confined to the cycle-owned Scratch target above. Initial
+  artifacts are confined to the cycle-owned internal and prior Scratch targets. Initial
   disposable formatter environments were removed before resumption.
 - Publication targets were re-read and match the starting leases. The pinned
   final read-only branch check passed, retaining eleven other public heads
