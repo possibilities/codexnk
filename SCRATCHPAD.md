@@ -1,6 +1,6 @@
 # Scratchpad
 
-## Published candidate; release and consumer handover pending
+## Published candidate; release build and consumer handover pending
 
 - On 2026-09-29 (2026-09-30 UTC), one atomic push using the original cycle leases
   published upstream mirror `b1e72963c3b71a9265a551e54beff078384efed9`, Integration
@@ -13,14 +13,23 @@
   Pinned read-only reconciliation and supervision checks passed.
 - [Integration CI 36655373435](https://github.com/possibilities/codexnk-codex/actions/runs/36655373435)
   and [carry CI 36655372543](https://github.com/possibilities/codexnk-codex/actions/runs/36655372543)
-  are running. Create `codexnk-v0.1.7` only after both pass for those exact commits;
-  then verify both archives, isolated runtime/middleware/code-mode behavior, and
-  install through this workshop before landing the aligned consumer pins.
+  both passed for those exact commits. The immutable `codexnk-v0.1.7` tag now
+  points at Integration `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`.
+  [Release workflow 36658591665](https://github.com/possibilities/codexnk-codex/actions/runs/36658591665)
+  is running. Its watcher will verify both archives after success, with an
+  internal-disk capacity check before downloading. Then verify isolated
+  runtime/middleware/code-mode behavior and install through this workshop before
+  landing the aligned consumer pins.
 - The verified v0.1.4 installation and canonical consumer pins remain active.
   Prepared consumer commits were rebased onto concurrent local work: AgentStart
   `9e0aeb85527d3a697b1f9bb237187099a97e4794` on `880c942206f1db50dd171a5f69e756cd4afc2d15`,
   and Stack `caca6d1301ed54060faf3367ffe13ed7956ea176` on
-  `e68797a77f22494c917d7fc8df4afbba6d7b059b`. Rebased validation is running.
+  `e68797a77f22494c917d7fc8df4afbba6d7b059b`. Rebased validation passed:
+  AgentStart's full validation, Stack's 68 settings/Bots tests (two live-runtime
+  checks deferred), and all four Stack installer tests. PNPM's attempted dependency
+  check generated build-approval placeholders; these were removed from the task
+  worktree, and existing installed Turbo/dependencies completed the tests. Both
+  task worktrees are clean; no dependency-build approvals were added.
   Preserve AgentStart's unrelated uncommitted `skills/fleet/MAP.md` edit and
   Stack's eleven unrelated unpublished commits when landing; do not push those
   Stack commits as incidental maintenance.
@@ -109,8 +118,8 @@
   No single release note covers this interval. Independent reviews are complete;
   the credential-boundary repairs are reviewed and verified. All nine required
   exact-candidate gates passed. Full-suite triage resumed on the internal disk
-  after two Scratch disconnections. Publication is complete; hosted CI, release
-  verification and consumer delivery remain pending.
+  after two Scratch disconnections. Publication and hosted branch CI are complete;
+  the tagged release build, verification and consumer delivery remain pending.
 - Working dispositions: **0 retire, 2 repair, 1 unchanged**. Invocation axes
   needs the home-exclusion bit in upstream's new explicit config equality and
   refresh paths, plus the home filter around cached marketplace discovery.
@@ -287,8 +296,8 @@
   `~/workshops/codexnk` and `--check-supervision` passed. No branch apply was run.
   The installed v0.1.4 package passed its per-file ownership hashes, modes and
   metadata checks; AgentStart still pins its exact tag/SHA. Public refs have now
-  advanced to the gated candidate; release tags and consumer bindings retain
-  the delivered baseline above.
+  advanced to the gated candidate and the v0.1.7 tag was created after hosted
+  branch CI passed. Consumer bindings retain the delivered baseline above.
 
 ## Audited upstream frontier
 
