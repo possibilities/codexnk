@@ -1,5 +1,22 @@
 # Scratchpad
 
+## Completed worktree retirement, 2026-09-30
+
+- The operator confirmed no Workshop work remained active and authorized
+  retiring the preserved maintenance and release-speed worktrees. All 11
+  completed trees were quiescent and matched the full, hash-verified recovery
+  backup before retirement through their actual common Git repositories.
+- Retired trees reclaimed 2.49 GiB internally. All branch refs and unpublished
+  commits remain; detached release-speed HEAD `02f19c94dca76710a5857ddb30c697b30819a119`
+  is anchored at `archive/release-speed/codexnk-codex-20260930`. The untracked
+  skills snapshot has an individually hash-verified archived copy; ignored
+  content remains recoverable from the complete Scratch backup.
+- No historical codexnk Workshop-related worktree remains. This supersedes the
+  retention disposition below, not its historical evidence. Retirement receipt:
+  `/Volumes/Scratch/archive/codexnk-relocation-20260930T154531Z/historical-worktree-retirement.json`.
+  Installed packages, consumer pins and unrelated application worktrees were
+  untouched. The receipt-writing task worktree is retired after this entry lands.
+
 ## Workshop relocation and cycle disk lifecycle, 2026-09-30
 
 - The coordinating agent completed and byte/Git-state verified relocation to
