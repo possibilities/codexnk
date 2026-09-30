@@ -1,6 +1,6 @@
 # Scratchpad
 
-## Published candidate; release build and consumer handover pending
+## Delivered baseline: v0.1.7, 2026-09-30
 
 - On 2026-09-29 (2026-09-30 UTC), one atomic push using the original cycle leases
   published upstream mirror `b1e72963c3b71a9265a551e54beff078384efed9`, Integration
@@ -16,25 +16,44 @@
   both passed for those exact commits. The immutable `codexnk-v0.1.7` tag now
   points at Integration `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`.
   [Release workflow 36658591665](https://github.com/possibilities/codexnk-codex/actions/runs/36658591665)
-  is running. Its watcher will verify both archives after success, with an
-  internal-disk capacity check before downloading. Then verify isolated
-  runtime/middleware/code-mode behavior and install through this workshop before
-  landing the aligned consumer pins.
-- The verified v0.1.4 installation and canonical consumer pins remain active.
-  Prepared consumer commits were rebased onto concurrent local work: AgentStart
-  `9e0aeb85527d3a697b1f9bb237187099a97e4794` on `880c942206f1db50dd171a5f69e756cd4afc2d15`,
-  and Stack `caca6d1301ed54060faf3367ffe13ed7956ea176` on
-  `e68797a77f22494c917d7fc8df4afbba6d7b059b`. Rebased validation passed:
-  AgentStart's full validation, Stack's 68 settings/Bots tests (two live-runtime
-  checks deferred), and all four Stack installer tests. PNPM's attempted dependency
-  check generated build-approval placeholders; these were removed from the task
-  worktree, and existing installed Turbo/dependencies completed the tests. Both
-  task worktrees are clean; no dependency-build approvals were added.
-  Preserve AgentStart's unrelated uncommitted `skills/fleet/MAP.md` edit and
-  Stack's eleven unrelated unpublished commits when landing; do not push those
-  Stack commits as incidental maintenance.
+  passed and published both archives. Exact-tag, archive digest/size, package
+  membership/modes and metadata verification passed. The macOS archive is
+  138,508,059 bytes, SHA-256 `46e16eeee574ae31289bb20a8cfd61e9d2c798b1b5c43af4582d0dca9bb98fc1`;
+  Linux is 399,130,819 bytes, SHA-256 `d00f427493984f77920a609e858142e1495ab354277e63aab6dac4307f98797c`.
+- The verified release is installed at `~/.local/libexec/codexnk/codex`; all three
+  macOS package-file hashes match its v2 ownership receipt. Prior release packages
+  and the separate vendor Codex binding are preserved. Isolated private-runtime,
+  WebSocket interception/read/completion, and packaged code-mode file-read/count/
+  SHA-256 checks passed. The code-mode proof disabled in-process fallback. Both
+  runtime/middleware checks also passed against the installed consumer. The first
+  middleware fixture used an overlong macOS temporary socket path; it passed with
+  `/private/tmp`. No resident Bot or owner process was restarted.
+- AgentStart `9e0aeb85527d3a697b1f9bb237187099a97e4794` is landed and pushed on
+  main. Stack `10cd42698a3571056569f99808738c376af5f128` is landed on local main,
+  preserving twelve prior unpublished commits; no Stack push was made. Its remote
+  main remains `9ab415a6d4295e10f545ae324565e2704ed44092`. Both canonical pins now
+  select v0.1.7 / `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`. AgentStart's unrelated
+  uncommitted `skills/fleet/MAP.md` edit is preserved byte-for-byte. Consumer proof:
+  AgentStart full validation, 68 Stack settings/Bots tests, four installer tests,
+  plus the two real-runtime tests above. No dependency-build approvals were added.
+- All nine required local gates passed after a clean candidate-only rebuild
+  (333 tests). All six fixture-isolation/V8-feature controls passed on both
+  candidate and captured upstream. The authorized full suite remains recorded as
+  20,959 passed, nine failed, four timed out, 66 skipped. The four timeouts passed
+  serially; all nine persistent failures reproduced upstream. Four were host Git
+  ignores, one ambient MCP configuration, one linked-V8 feature mismatch, and three
+  upstream-reproduced WebRTC/RTP timeouts. Do not describe the full suite as green.
+- Post-handover pinned branch check/apply/check and supervision checks passed.
+  Apply changed no published commit. Eleven unrelated public heads were retained;
+  their independent Dependabot movement was observed and not overwritten.
+- Relocation and cleanup are explicitly delegated to the coordinating agent.
+  Keep current worktrees, test evidence and cycle caches for that handoff; do not
+  remove them as normal maintenance cleanup. Backups and recovery archives belong
+  under `/Volumes/Scratch/archive`. The session and any tool-service cwd bindings
+  must be checked/released before physical relocation. No maintenance build,
+  release watcher, test or install job remains pending after this delivery.
 
-## Delivered baseline
+## Prior delivered baselines
 
 - Captured upstream `main`: `e154f7b80789b742b162cf0e44de0bc021068a20`.
 - Before the current publication, public `main` mirrored that commit. `carry/invocation-axes` was
@@ -104,7 +123,10 @@
   `7bccdfb0e871681472ff9c9e2a160c4e1d479453`; before the v0.1.1 cycle,
   public `main` and its carry were `f832ae88f82a5aed86a072556e753bd253f11619`.
 
-## Maintenance cycle in progress on internal disk: 2026-09-29
+## Historical preparation and recovery notes: 2026-09-29
+
+The following records earlier cycle states; the delivered baseline above supersedes
+their pending-work and old consumer-pin statements. Retained for relocation handoff.
 
 - Immutable upstream target: `b1e72963c3b71a9265a551e54beff078384efed9`.
   Captured all public heads before fetching that exact upstream object once.
@@ -301,6 +323,19 @@
 
 ## Audited upstream frontier
 
+- Complete through `b1e72963c3b71a9265a551e54beff078384efed9` on 2026-09-30.
+  Reviewed all 215 commits since `e154f7b80789b742b162cf0e44de0bc021068a20`:
+  [audited interval](https://github.com/openai/codex/compare/e154f7b80789b742b162cf0e44de0bc021068a20...b1e72963c3b71a9265a551e54beff078384efed9).
+  Groups: GPT-6.1 Sol default/GPT-5.4 removal, instant input preemption,
+  enterprise auth/policy refresh, cached capability discovery, Guardian and remote
+  message boards, history performance, sandbox and TUI fixes. No single release
+  note covers the interval. Dispositions: **0 retire, 2 repair, 1 unchanged**.
+  Downstream-only stance remains; approved material scope narrowing rejects
+  keyring-only enterprise MCP and selected model-provider gateway OAuth in
+  three-axis mode. Ordinary runtime-file MCP OAuth and no-flags behavior remain.
+
+Previous frontier:
+
 - Complete through `e154f7b80789b742b162cf0e44de0bc021068a20` on
   2026-09-24. The previous frontier was
   `30fc6864cc1318121eca1843c217fe00ce1212f1`.
@@ -315,6 +350,14 @@
   input middleware became upstream behavior.
 
 ## Carry: invocation axes
+
+- Current published tip: `73c2f483b8e9d64fdc7ea7ec8d9e54b2ed7ff624`, integrated
+  at `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`. **Repair**: preserve launch
+  restrictions across config equality, retained-session refresh and agent-role
+  reconstruction; filter cached home marketplaces; enforce runtime-file credential
+  storage and approved enterprise/gateway exclusions. Ten regression checks passed
+  after seven intended pre-fix failures; exact-candidate/hosted/release checks pass.
+  The gateway guard also repairs a pre-existing credential defect. Prior history:
 
 - Current published carry tip `02f19c94dca76710a5857ddb30c697b30819a119`
   restores the compact upstream release profile after the eight-codegen-unit
@@ -344,6 +387,13 @@
 
 ## Carry: input middleware
 
+- Current published tip: `b3705e387f2115b48351192a3394d8150e43e61d`, integrated
+  at `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`. **Repair**: adapt the gate to
+  upstream's native start/steer and accepted-turn trace, preserving interception
+  before native dispatch. Stable/experimental exports regenerated. Protocol,
+  WebSocket ownership/journal and realtime gates and installed interception pass.
+  Prior history:
+
 - Exact carry `0f8797fbbe3103e0edb8c9d951c22e20fe310e26` is based on the
   delivered upstream `main`. Its generated stable and experimental protocol
   exports were regenerated after replay. It was first integrated at
@@ -365,6 +415,11 @@
   later.
 
 ## Carry: runtime companions
+
+- Current published tip: `c8ec723729b001d4f40232df5d249c90ffa5aa2d`, integrated
+  at `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`. **Unchanged** semantic replay:
+  package layout, code-mode companion and digest-bound Linux bwrap remain needed.
+  Both v0.1.7 archives and isolated host execution pass. Prior history:
 
 - Exact carry `7939215687df51e24d39662507d4e392a3856211` is based on the
   previous captured upstream `main` and merged into Integration at
@@ -405,6 +460,16 @@
   build was attempted and no local-build speedup was measured.
 
 ## Cycle history
+
+2026-09-30: Closed the 215-commit maintenance audit and delivered v0.1.7. All
+required local and hosted gates passed; full-suite failures were classified with
+captured-upstream controls. Atomic original-leased publication, both release
+archives, isolated/installed runtime checks and consumer handover completed.
+Invocation axes and middleware repaired; runtime companions replayed unchanged.
+Scoped enterprise/gateway exceptions are approved in MAINTAIN.md. AgentStart pin
+published; Stack pin landed locally without publishing unrelated commits. Final
+reconciliation passed. Cleanup and checkout relocation are reserved for the
+coordinating agent, including preservation of records under Scratch/archive.
 
 2026-09-23: Reviewed the complete 138-commit interval above. Dispositions:
 0 retired, 1 repaired, 0 unchanged. Migrated the public branch layout to a
