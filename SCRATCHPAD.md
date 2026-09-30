@@ -1,13 +1,38 @@
 # Scratchpad
 
+## Published candidate; release and consumer handover pending
+
+- On 2026-09-29 (2026-09-30 UTC), one atomic push using the original cycle leases
+  published upstream mirror `b1e72963c3b71a9265a551e54beff078384efed9`, Integration
+  `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`, invocation carry
+  `73c2f483b8e9d64fdc7ea7ec8d9e54b2ed7ff624`, middleware carry
+  `b3705e387f2115b48351192a3394d8150e43e61d`, and runtime carry
+  `c8ec723729b001d4f40232df5d249c90ffa5aa2d`. All three carries are ancestors.
+  All five published refs were re-read and matched; eleven unrelated public
+  heads were retained. Local declared refs now match that published graph.
+  Pinned read-only reconciliation and supervision checks passed.
+- [Integration CI 36655373435](https://github.com/possibilities/codexnk-codex/actions/runs/36655373435)
+  and [carry CI 36655372543](https://github.com/possibilities/codexnk-codex/actions/runs/36655372543)
+  are running. Create `codexnk-v0.1.7` only after both pass for those exact commits;
+  then verify both archives, isolated runtime/middleware/code-mode behavior, and
+  install through this workshop before landing the aligned consumer pins.
+- The verified v0.1.4 installation and canonical consumer pins remain active.
+  Prepared consumer commits were rebased onto concurrent local work: AgentStart
+  `9e0aeb85527d3a697b1f9bb237187099a97e4794` on `880c942206f1db50dd171a5f69e756cd4afc2d15`,
+  and Stack `caca6d1301ed54060faf3367ffe13ed7956ea176` on
+  `e68797a77f22494c917d7fc8df4afbba6d7b059b`. Rebased validation is running.
+  Preserve AgentStart's unrelated uncommitted `skills/fleet/MAP.md` edit and
+  Stack's eleven unrelated unpublished commits when landing; do not push those
+  Stack commits as incidental maintenance.
+
 ## Delivered baseline
 
 - Captured upstream `main`: `e154f7b80789b742b162cf0e44de0bc021068a20`.
-- Public `main` mirrors that commit. `carry/invocation-axes` is
+- Before the current publication, public `main` mirrored that commit. `carry/invocation-axes` was
   `02f19c94dca76710a5857ddb30c697b30819a119`; `carry/input-middleware`
-  is `0f8797fbbe3103e0edb8c9d951c22e20fe310e26`; and
-  `carry/runtime-companions` is `7939215687df51e24d39662507d4e392a3856211`.
-  Public and local Integration are
+  was `0f8797fbbe3103e0edb8c9d951c22e20fe310e26`; and
+  `carry/runtime-companions` was `7939215687df51e24d39662507d4e392a3856211`.
+  Public and local Integration were
   `7ffcc693c1ac3e19b688aedea2fb4b2a6afc124f`, with all three carries as
   ancestors. This already-published follow-up restored the compact macOS
   release profile after v0.1.5; it was discovered during the 2026-09-29 cycle,
@@ -84,7 +109,8 @@
   No single release note covers this interval. Independent reviews are complete;
   the credential-boundary repairs are reviewed and verified. All nine required
   exact-candidate gates passed. Full-suite triage resumed on the internal disk
-  after two Scratch disconnections; publication and delivery remain pending.
+  after two Scratch disconnections. Publication is complete; hosted CI, release
+  verification and consumer delivery remain pending.
 - Working dispositions: **0 retire, 2 repair, 1 unchanged**. Invocation axes
   needs the home-exclusion bit in upstream's new explicit config equality and
   refresh paths, plus the home filter around cached marketplace discovery.
@@ -206,9 +232,14 @@
   the candidate source. All 159 workspace packages were cleaned (7.6 GiB),
   retaining third-party dependencies. The target is now bound to the exact
   Integration worktree/SHA via `cycle-source.json`. All nine required gates and
-  the candidate fixture-isolation controls are being rebuilt/rerun; distinct
+  the candidate fixture-isolation controls passed after rebuilding; distinct
   `candidate-internal-gate-*` logs preserve the earlier receipts. Free space
-  after cleanup was 24.77 GiB. No source repair was made for this cache issue.
+  after cleanup was 24.77 GiB. The 8 GiB guard paused twice between commands;
+  reclaimed only completed cycle test executables and resumed from retained
+  passing receipts. All nine required gates passed (333 tests), as did the six
+  candidate isolation/feature-control cases. Free space after the final local
+  check was 8.38 GiB. No source repair was made for this cache issue. The complete
+  suite's original failing status is retained; it is not claimed green.
 - With the operator's cache-cleanup authorization, removed regenerable Bazel/Zig
   caches, Homebrew download/pip caches, UV's cache, and four abandoned July/August/
   September runtime-download staging directories with no open handles. Ran PNPM's
@@ -239,8 +270,8 @@
   candidate above. The `credential-repair`, `upstream-baseline`, `workshop`,
   `agentstart`, and `stack` worktrees are also cycle-owned. All pre-existing
   release-speed worktrees remain.
-  The operator approved detaching the clean release-speed `codexnk-codex`
-  worktree at its existing `02f19c94dc` after successful publication, preserving
+  As approved, after successful publication the clean release-speed
+  `codexnk-codex` worktree was detached at its existing `02f19c94dc`, preserving
   its files while freeing the declared local carry ref for reconciliation.
 - Leases, upstream fetch receipt, interval inventory, failed schema log and
   final read-only reconciliation are retained in
@@ -255,8 +286,9 @@
   had the old `~/code/codexnk` path; the declared entrypoint reconverged it to
   `~/workshops/codexnk` and `--check-supervision` passed. No branch apply was run.
   The installed v0.1.4 package passed its per-file ownership hashes, modes and
-  metadata checks; AgentStart still pins its exact tag/SHA. Public refs,
-  release tags and consumer bindings retain the delivered baseline above.
+  metadata checks; AgentStart still pins its exact tag/SHA. Public refs have now
+  advanced to the gated candidate; release tags and consumer bindings retain
+  the delivered baseline above.
 
 ## Audited upstream frontier
 
