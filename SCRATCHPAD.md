@@ -52,6 +52,16 @@
   under `/Volumes/Scratch/archive`. The session and any tool-service cwd bindings
   must be checked/released before physical relocation. No maintenance build,
   release watcher, test or install job remains pending after this delivery.
+- Final relocation inspection still found old test-created processes 35693,
+  39772, 44576 and 79234 holding the Integration CLI cwd, and Scratch test helpers
+  79200/79208. Current session tool services also hold the Integration cwd;
+  OpenCode session `ses_f11c2434effeqFYM5aVs0b8nRY` remains bound there. These
+  processes were not stopped because cleanup is reserved for the coordinator.
+  Maintenance delivery is complete, but physical relocation is **NOT READY**
+  until those live bindings are released/rebound and rechecked. PID values are
+  observations, not authority to stop a later process that reuses one.
+  Canonical Workshop has installer-generated untracked `scripts/__pycache__/`;
+  it was preserved, as was the invocation carry's untracked failed skills snapshot.
 
 ## Prior delivered baselines
 
