@@ -13,7 +13,9 @@ release binary; AgentStart selects it through its managed shim.
 
 ## Upstream
 
-- Bound checkout: `~/source/openai--codex-codexnk`. `upstream` is `openai/codex`.
+- Bound checkout: `fork/` under the canonical Workshop (`~/workshops/codexnk/fork`).
+  Persistent maintenance worktrees belong under the Workshop's ignored
+  `worktrees/`. `upstream` is `openai/codex`.
   `public` is `possibilities/codexnk-codex`, the release repository. This
   checkout has no `fork` remote. Do not base or publish this effort on the
   unrelated `possibilities/codex` repository.
@@ -21,6 +23,10 @@ release binary; AgentStart selects it through its managed shim.
   an upstream pull request. Judge future upstream replacements from code and
   behavior, not request status.
 - Base: one exact upstream `main` captured for each cycle.
+- `scripts/reconcile-branches.sh` and `scripts/publish-release.sh` resolve the
+  canonical Workshop through Git's common directory, including when invoked in
+  a linked Workshop worktree. `CODEXNK_CODEX_CHECKOUT` overrides the fork path;
+  set it explicitly for a nonstandard Git layout. No old-path symlink is needed.
 
 ## Branch model
 
@@ -152,19 +158,171 @@ A `codexnk-v*` tag runs that test, then builds `codex`,
 the binaries from `CARGO_TARGET_DIR`, which setup-ci sets outside `target/`.
 
 These focused checks are the local gate, from the carry or Integration
-worktree's `codex-rs`. A complete `just test` is attempted when authorized and
-practical; report any system-dependency or build-capacity blocker rather than
-claiming an incomplete suite passed.
+worktree's `codex-rs`, through the cycle helper below. A complete `just test` is
+attempted when authorized and practical; report any system-dependency or
+build-capacity blocker rather than claiming an incomplete suite passed.
 
 Gate the exact committed candidate. Hosted branch CI is checked after
 publication and before creating a release tag.
 
-After the last local gate and release verification, run `cargo clean` in each
-owned Codex build worktree used for this cycle, and remove other disposable
-build artifacts made in owned worktrees. Verify the intended paths and Git
-status first. Do not clean the bound/shared checkout, another worktree,
-global package caches or installed release artifacts. Keep a worktree while
-its branch still needs development; release cleanup does not discard source.
+## Local disk lifecycle (mandatory)
+
+Use `python3 scripts/cycle.py` for **every local maintenance cycle**. This is a
+macOS helper, not a scheduler. It requires mounted `/Volumes/Scratch` and the
+system `/usr/sbin/lsof`; missing storage or incomplete activity inspection is a
+blocking error, never permission to use internal disk. Choose a unique cycle
+name (letters, digits, `_`, `-`; at most 80 characters) and retain it throughout
+the cycle. For example, from the Workshop task worktree:
+
+```sh
+helper="$PWD/scripts/cycle.py"
+cycle=maintain-20261001
+python3 "$helper" start "$cycle"
+# From each carry/Integration worktree's codex-rs, reuse this same helper/cycle:
+python3 "$helper" run "$cycle" -- just test -p codex-cli invocation_axes
+python3 "$helper" run "$cycle" -- just test -p codex-core invocation_axes
+# After a gate batch / before switching maintenance phases:
+python3 "$helper" checkpoint "$cycle"
+# At a deliberate clean-candidate rebuild boundary, after saving evidence:
+python3 "$helper" checkpoint "$cycle" --clean
+# After last gate, release verification and evidence handover:
+python3 "$helper" final "$cycle" --evidence-saved
+```
+
+The command contract is intentionally small:
+
+- **`start CYCLE`** exclusively creates
+  `/Volumes/Scratch/codexnk-cycles/CYCLE/{target,tmp}` and matching ownership
+  receipts under `/Volumes/Scratch/archive/codexnk-cycles/CYCLE`. It refuses an
+  existing name rather than adopting output. Its JSON output reports these
+  paths. Tiny ownership/lock records and empty output directories remain after
+  final cleanup; a finalized name is not reusable.
+- **`run CYCLE -- COMMAND [ARG ...]`** runs in the caller's current directory,
+  with `CARGO_TARGET_DIR` set to that one target, `CARGO_INCREMENTAL=0` unless
+  explicitly overridden in the environment, and `TMPDIR`, `TMP`, `TEMP` set
+  to the cycle's temporary directory. All cycle worktrees share this target;
+  serialize commands. Do not pass `--target-dir`, override the target in a
+  child shell, or configure another Cargo build directory. An incremental
+  override needs a recorded reason and phase cleanup. Shared Cargo/Rust stores
+  are left alone. Exit status is preserved unless cleanup itself fails.
+  Successful and failed commands both reclaim temporary output when idle;
+  compiled output is retained for the next check, avoiding per-test rebuilds.
+- **`checkpoint CYCLE`** is required after each gate batch, at each phase
+  transition, and when resuming an interrupted cycle. It reclaims idle temporary
+  output, checks build activity, and records target size. **`--clean`** also
+  discards the target contents: use it when changing the captured base or
+  needing an uncontaminated candidate, or at a completed phase whose cache is
+  no longer useful. Save useful evidence first. Do not clean between every
+  individual Cargo test. Disk pressure calls for a checkpoint and an explicit
+  phase decision, not an unattended deletion loop.
+- **`final CYCLE --evidence-saved`** requires confirmation that useful evidence
+  has already been saved, then removes all cycle target/tmp contents and closes
+  the cycle to further runs. It is required after delivery, or after an
+  abandoned cycle is quiescent and its evidence is preserved. It is safe to
+  repeat; it never deletes the evidence archive.
+
+Each run archives a compact command/cwd/exit/cleanup receipt, not full build
+stdout. `CODEXNK_EVIDENCE_DIR` points commands at the separate archive; save
+small logs, summaries, hashes and failure fixtures there **before** the command
+exits (tmp is disposable). Stream output normally, or explicitly capture a
+bounded log in that directory; do not copy multi-gigabyte targets into evidence.
+Do not put secrets in command arguments or receipts. Existing recovery archives
+and historical Scratchpad entries remain evidence, not cleanup candidates.
+
+Cleanup validates matching ownership receipts and exact directory identities,
+rejects symlinks/foreign ownership/nested mounts in the scope being removed,
+holds a cycle lock, and requires a successful system-wide open-file listing
+with no handles, mapped executables or working directories in target/tmp.
+Commands must stay foreground and must not leave servers or detached children.
+The lock serializes helper users; it does not fence unrelated processes that
+ignore the helper. Ensure the whole cycle is quiescent before destructive
+checkpoints; do not launch other processes into its output during inspection.
+The helper never stops processes. A refusal preserves output for inspection.
+
+On interruption or a cleanup refusal, keep the cycle name and receipts. Wait
+for its commands to exit, inspect any reported PID/path, then run `checkpoint`
+before continuing. A killed wrapper or unplugged Scratch can leave disposable
+output behind; no signal handler can guarantee cleanup then. Never delete a
+lock or rewrite an ownership receipt to force progress. A direct child retains
+the lock if its wrapper exits. A missing/partial ownership receipt requires
+manual recovery of that exact cycle, not automatic adoption by this helper.
+
+Some macOS Unix-socket fixtures require a shorter path than Scratch provides.
+Only those small socket fixtures may use an explicitly created, uniquely named
+directory under `/private/tmp`. Keep its exact path in the cycle evidence,
+scope its cleanup to that fixture, and remove it on success/failure after its
+processes exit. That exception never applies to Cargo targets, large temporary
+output or evidence. The cycle helper does not sweep `/private/tmp`.
+
+Source/worktrees, untracked source evidence, shared package/Cargo/Rust caches,
+installed release packages and legacy targets are outside the helper's cleanup
+scope. Do not run broad `cargo clean` in historical or shared worktrees. Legacy
+target removal needs a separately authorized exact-path ownership/activity
+review; relocation cleanup belongs to its coordinating parent. Keep worktrees
+while their branches still need development; cleanup does not discard source.
+
+### Worktree retirement (mandatory at cycle start and handover)
+
+Target reclamation and source worktree retirement are separate requirements.
+Every `/maintain` begins by reviewing **previously completed** retained cycle
+worktrees and finishes with the coordinator retiring this cycle's delivered,
+finished trees. Do not treat indefinite source retention as the default cleanup
+policy. Record each tree's disposition in the cycle archive and Scratchpad:
+retired, or retained with an explicit reason, responsible owner and next step.
+An unfinished branch, another active agent or unverified evidence is a reason
+to retain and hand off that specific tree, not to skip the whole review.
+
+The coordinator owns this workflow; `cycle.py` deliberately cannot delete
+source worktrees or select candidates. Use an explicit cycle inventory, never
+all directories under `worktrees/` as an implicit deletion list. A Workshop
+maintenance tree can contain worktrees registered in different common Git
+repositories (Codex, Workshop, AgentStart, Stack); physical location alone
+does not establish ownership or the repository that must remove it.
+
+For each exact candidate, in order:
+
+1. Establish that the cycle owns it and its work is delivered/accepted, identify
+   its actual common repository with `git -C "$tree" rev-parse
+   --path-format=absolute --git-common-dir`, and record the matching entry from
+   that repository's `git worktree list --porcelain`. Coordinate with any named
+   owner. Canonical checkouts and another cycle's active trees are not candidates.
+2. Record HEAD, branch, status and reachability. Preserve **all** branch refs and
+   unpublished commits; worktree retirement never deletes branches. For a
+   detached HEAD, create and verify a durable, uniquely named local ref such as
+   `refs/heads/archive/<cycle>/<tree-name>` at the exact HEAD before removal.
+   Do not overwrite an existing archive ref. If delivery/commit reachability is
+   uncertain, retain the tree and report the missing check.
+3. Inspect tracked changes plus both untracked and ignored files, using
+   `git status --short --untracked-files=all --ignored` and the two explicit
+   inventories `git ls-files --others --exclude-standard` and
+   `git ls-files --others --ignored --exclude-standard` (use `-z` when scripting).
+   Preserve source edits on an owned branch through normal review. Archive
+   useful untracked/ignored evidence under `/Volumes/Scratch/archive`, recording
+   source paths, file sizes and SHA-256 hashes; verify the saved copy before
+   retiring its exact source copy. Never assume ignored files are disposable:
+   `git worktree remove` can discard ignored content. Resolve each item;
+   incomplete evidence preservation blocks removal. Preserve historical
+   relocation/recovery archives unchanged.
+4. Require a successful open-file/activity inspection with no process cwd,
+   mapped executable or open handle beneath the exact tree; failed/incomplete
+   inspection blocks removal. Coordinate release of tool-service/session cwd
+   bindings and any live owner. Never stop an unrelated process to force cleanup.
+5. From **outside** that tree and from its actual common repository's stable
+   checkout, recheck HEAD, clean status, empty untracked/ignored inventories,
+   registration and activity immediately before `git worktree remove "$tree"`.
+   Use no `--force`, `rm -rf`, reset, stash, or prune as a deletion shortcut.
+   Let a refusal block that candidate and preserve its state. Verify the exact
+   registration/path is gone and the retained refs still resolve, then archive
+   the retirement receipt.
+
+A worker must never remove its own checkout or its parent's checkout. Return
+committed work and verification first, stop writing, and hand retirement to
+the coordinator after integration/delivery. Move the coordinator's session/cwd
+to a stable location before removing its own completed task tree. The current
+relocation handoff trees remain the relocation parent's responsibility; this
+policy does not retroactively authorize a worker to delete them. Final cycle
+handover is complete only when every owned tree is retired or has the explicit
+retention handoff above, alongside successful `cycle.py final` output cleanup.
 
 ## Consumer
 

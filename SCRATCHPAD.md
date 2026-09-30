@@ -1,5 +1,38 @@
 # Scratchpad
 
+## Workshop relocation and cycle disk lifecycle, 2026-09-30
+
+- The coordinating agent completed and byte/Git-state verified relocation to
+  `~/workshops/codexnk/fork` and `~/workshops/codexnk/worktrees/`, repairing all
+  four common repositories' worktree registrations. Recovery and before/after
+  evidence: `/Volumes/Scratch/archive/codexnk-relocation-20260930T154531Z/`.
+  Historical entries below retain their original paths and observations.
+- Active Workshop docs and script defaults now resolve the canonical Workshop's
+  `fork/`, including from linked Workshop worktrees; the explicit checkout
+  override remains available. Ignored local fork/worktrees and Python bytecode
+  stay outside Workshop commits; existing bytecode is preserved.
+- `scripts/cycle.py` owns new cycle output only: one shared Scratch target,
+  non-incremental builds by default, automatic idle temporary cleanup, mandatory
+  phase checkpoints and final output cleanup after evidence is saved. Matching
+  ownership receipts, cycle locking and open-file inspection bound destructive
+  cleanup. Evidence stays under Scratch's archive; legacy caches are not adopted.
+- Every `/maintain` now reviews retained completed worktrees at startup and
+  retires finished cycle-owned worktrees after delivery through their actual
+  common repositories. Detached commits and untracked/ignored evidence must be
+  preserved first; active or unfinished trees get an explicit retention handoff.
+  Source retirement is coordinator-owned and separate from target cleanup.
+- Verification: four destructive-boundary/lifecycle tests, 17 existing
+  installer tests, shell syntax, linked-worktree/default-override path checks,
+  and the project docs check passed. A tiny real Scratch command completed its
+  checkpoint/final lifecycle with empty output and preserved evidence under
+  `/Volumes/Scratch/archive/codexnk-cycles/relocation-policy-proof-20260930T160549Z/`.
+  No Codex build, release publication, runtime restart or source-tree retirement
+  was performed by this tooling change.
+- This changes Workshop policy/tooling only. Public `main` remains
+  `b1e72963c3b71a9265a551e54beff078384efed9`, Integration remains
+  `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`, and release `codexnk-v0.1.7`
+  and all consumer pins remain unchanged. Parent owns integration and landing.
+
 ## Relocation handoff: READY, 2026-09-30
 
 The operator assigned this session coordination of relocation readiness. This

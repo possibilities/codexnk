@@ -17,7 +17,8 @@ tag="$2"
     exit 64
 }
 
-checkout="${CODEXNK_CODEX_CHECKOUT:-$HOME/source/openai--codex-codexnk}"
+source "$(dirname "$0")/workshop-paths.sh"
+checkout=$(codexnk_checkout)
 for url in "$(git -C "$checkout" remote get-url public)" \
     "$(git -C "$checkout" remote get-url --push public)"; do
     case "$url" in

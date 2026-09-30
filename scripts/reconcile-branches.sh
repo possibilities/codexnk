@@ -12,7 +12,9 @@ fi
 
 MAINTAIN_WORKSHOP="$(cd "$(dirname "$0")/.." && pwd)"
 export MAINTAIN_WORKSHOP
-export MAINTAIN_CHECKOUT="${CODEXNK_CODEX_CHECKOUT:-$HOME/source/openai--codex-codexnk}"
+source "$MAINTAIN_WORKSHOP/scripts/workshop-paths.sh"
+MAINTAIN_CHECKOUT=$(codexnk_checkout)
+export MAINTAIN_CHECKOUT
 export MAINTAIN_FORK_REPO=possibilities/codexnk-codex
 export MAINTAIN_UPSTREAM_REPO=openai/codex
 export MAINTAIN_FORK_REMOTE=public
