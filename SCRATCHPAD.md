@@ -37,10 +37,25 @@
   the prior implementation and passed after the fix, preserving an open outside
   sentinel through directory/file/dangling-link removal. All four cycle tests,
   shell syntax, project docs and diff checks passed again.
+- Parent acceptance: all four cycle tests and 17 installer tests passed in the
+  integrated task worktree. Canonical default-path and supervision checks passed;
+  pinned read-only branch reconciliation preserved the captured upstream and
+  published Integration/carry heads. The historical Scratchpad body is unchanged.
+- Removed the idle, ownership-verified legacy cycle target
+  `/Volumes/Scratch/codexnk-maintain-20260929-vutj0aww-target`, reclaiming
+  52.98 GiB on Scratch. The relocation archive holds the cleanup receipt and a
+  full source/worktree recovery backup. Installed package and vendor hashes,
+  unpublished commits and untracked evidence remain preserved.
+- The 11 historical maintenance/release-speed worktrees remain intact under the
+  explicit preservation handoff. Their exact inventory, retention owner and
+  next-cycle retirement review are recorded in `retained-worktrees-handoff.json`
+  in the relocation archive above. The next `/maintain` coordinator must apply
+  the mandatory retirement workflow; retaining a branch does not require keeping
+  its worktree.
 - This changes Workshop policy/tooling only. Public `main` remains
   `b1e72963c3b71a9265a551e54beff078384efed9`, Integration remains
   `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`, and release `codexnk-v0.1.7`
-  and all consumer pins remain unchanged. Parent owns integration and landing.
+  and all consumer pins remain unchanged.
 
 ## Relocation handoff: READY, 2026-09-30
 
