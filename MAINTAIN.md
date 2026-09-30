@@ -25,8 +25,10 @@ release binary; AgentStart selects it through its managed shim.
 - Base: one exact upstream `main` captured for each cycle.
 - `scripts/reconcile-branches.sh` and `scripts/publish-release.sh` resolve the
   canonical Workshop through Git's common directory, including when invoked in
-  a linked Workshop worktree. `CODEXNK_CODEX_CHECKOUT` overrides the fork path;
-  set it explicitly for a nonstandard Git layout. No old-path symlink is needed.
+  a linked Workshop worktree. Reconciliation's `MAINTAIN_WORKSHOP` always names
+  that canonical Workshop, so supervision never binds a disposable task tree.
+  `CODEXNK_CODEX_CHECKOUT` overrides only the fork path. Canonical Workshop
+  discovery requires its standard `.git` layout. No old-path symlink is needed.
 
 ## Branch model
 
@@ -230,9 +232,13 @@ Do not put secrets in command arguments or receipts. Existing recovery archives
 and historical Scratchpad entries remain evidence, not cleanup candidates.
 
 Cleanup validates matching ownership receipts and exact directory identities,
-rejects symlinks/foreign ownership/nested mounts in the scope being removed,
-holds a cycle lock, and requires a successful system-wide open-file listing
+rejects redirected owned roots, foreign ownership and nested mounts, holds a
+cycle lock, and requires a successful system-wide open-file listing
 with no handles, mapped executables or working directories in target/tmp.
+Symlink entries inside target/tmp are unlinked without following them, including
+dangling links and links to outside directories. Their destinations are never
+cleaned. Recursive removal requires Python's symlink-safe `shutil.rmtree` support;
+if unavailable, cleanup refuses before deleting output.
 Commands must stay foreground and must not leave servers or detached children.
 The lock serializes helper users; it does not fence unrelated processes that
 ignore the helper. Ensure the whole cycle is quiescent before destructive

@@ -28,6 +28,15 @@
   `/Volumes/Scratch/archive/codexnk-cycles/relocation-policy-proof-20260930T160549Z/`.
   No Codex build, release publication, runtime restart or source-tree retirement
   was performed by this tooling change.
+- Parent-review follow-up: reconciliation now resolves `MAINTAIN_WORKSHOP` to
+  the canonical Workshop as well as resolving the fork there. Linked-worktree
+  `--print-model` and `--check-supervision` pass; the explicit fork override
+  remains valid and supervision config was verified unchanged. Cleanup now
+  unlinks symlink entries inside target/tmp without following them, while still
+  rejecting redirected owned roots. The updated boundary test failed against
+  the prior implementation and passed after the fix, preserving an open outside
+  sentinel through directory/file/dangling-link removal. All four cycle tests,
+  shell syntax, project docs and diff checks passed again.
 - This changes Workshop policy/tooling only. Public `main` remains
   `b1e72963c3b71a9265a551e54beff078384efed9`, Integration remains
   `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`, and release `codexnk-v0.1.7`

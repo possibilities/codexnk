@@ -69,6 +69,7 @@ class CycleTests(unittest.TestCase):
                 "assert os.environ['CARGO_INCREMENTAL'] == '0'",
                 f"(target / 'artifact-{index}').write_text('build fixture')",
                 "(tmp / 'disposable').write_text('remove on success or failure')",
+                "(tmp / 'evidence-link').symlink_to(os.environ['CODEXNK_EVIDENCE_DIR'])",
                 f"(pathlib.Path(os.environ['CODEXNK_EVIDENCE_DIR']) / 'proof-{index}.json').write_text(json.dumps(dict(target=str(target), cwd=os.getcwd())))",
                 f"sys.exit({exit_code})",
             ])
@@ -93,7 +94,7 @@ class CycleTests(unittest.TestCase):
         self.assertEqual(json.loads((self.cycle.archive / "proof-0.json").read_text()), proofs[0])
         self.assertIn("cycle is final", self.invoke("run", "--", "/usr/bin/true", code=1).stderr)
 
-    def test_cleanup_refuses_replaced_scope_and_symlink_escape(self):
+    def test_cleanup_refuses_replaced_roots_but_unlinks_nested_symlinks(self):
         sentinel = self.cycle.archive / "untracked-evidence"
         sentinel.write_text("must survive")
         artifact = self.cycle.target / "owned-output"
@@ -114,14 +115,6 @@ class CycleTests(unittest.TestCase):
                 self.cycle.target.unlink()
         finally:
             original.rename(self.cycle.target)
-        link = self.cycle.target / "escape"
-        link.symlink_to(self.cycle.archive, target_is_directory=True)
-        try:
-            self.assertIn("redirected/foreign", self.invoke("checkpoint", "--clean", code=1).stderr)
-            self.assertEqual(artifact.read_text(), "preserve on refusal")
-            self.assertEqual(sentinel.read_text(), "must survive")
-        finally:
-            link.unlink()
         receipt = self.cycle.root / "owner.json"
         saved = receipt.read_bytes()
         receipt.write_text("{}")
@@ -130,6 +123,26 @@ class CycleTests(unittest.TestCase):
             self.assertTrue(artifact.exists())
         finally:
             receipt.write_bytes(saved)
+        nested = self.cycle.target / "nested"
+        nested.mkdir()
+        links = [self.cycle.target / "outside-directory", nested / "outside-file",
+                 nested / "dangling", self.cycle.tmp / "outside-directory"]
+        for link, destination in zip(links, (self.cycle.archive, sentinel,
+                                            self.cycle.archive / "missing", self.cycle.archive)):
+            link.symlink_to(destination)
+        try:
+            # An open outside target is not cycle output: unlink its aliases, not it.
+            with sentinel.open() as opened:
+                self.invoke("checkpoint", "--clean")
+                self.assertEqual(opened.read(), "must survive")
+            self.assertEqual(list(self.cycle.target.iterdir()), [])
+            self.assertEqual(list(self.cycle.tmp.iterdir()), [])
+            self.assertEqual(sentinel.read_text(), "must survive")
+        finally:
+            # Also permits a pre-fix regression run to finish its owned cycle.
+            for link in links:
+                if link.is_symlink():
+                    link.unlink()
 
     def test_live_output_lock_and_unavailable_inspection_block_cleanup(self):
         artifact = self.cycle.target / "live-output"

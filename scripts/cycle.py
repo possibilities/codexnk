@@ -143,8 +143,8 @@ class Cycle:
                         fail(f"live/open build output (pid {os.fsdecode(pid)}): {os.fsdecode(field[1:])}")
 
     def inventory(self, directory):
-        # Reject *all* symlinks and nested mounts, including benign-looking ones.
-        # This is not a general cleaner and never adopts a legacy target.
+        # Inspect entries themselves, never symlink destinations. Only actual
+        # directories are traversed; nested mounts and foreign owners are refused.
         size = 0
         device = directory.stat().st_dev
         pending = [directory]
@@ -153,10 +153,11 @@ class Cycle:
             with os.scandir(parent) as entries:
                 for entry in entries:
                     info = entry.stat(follow_symlinks=False)
-                    if (entry.is_symlink() or info.st_dev != device or
-                            info.st_uid != os.getuid() or os.path.ismount(entry.path)):
-                        fail(f"redirected/foreign output refused: {entry.path}")
-                    if entry.is_dir(follow_symlinks=False):
+                    if info.st_dev != device or info.st_uid != os.getuid():
+                        fail(f"foreign output refused: {entry.path}")
+                    if stat.S_ISDIR(info.st_mode):
+                        if os.path.ismount(entry.path):
+                            fail(f"nested mount refused: {entry.path}")
                         pending.append(entry.path)
                     else:
                         size += info.st_size
@@ -164,17 +165,18 @@ class Cycle:
 
     def cleanup(self, build=False):
         self.validate()
+        if not shutil.rmtree.avoids_symlink_attacks:
+            fail("safe no-follow directory removal unavailable; preserving output")
         paths = (self.target, self.tmp) if build else (self.tmp,)
         sizes = {str(path): self.inventory(path) for path in paths}
         self.idle()
         # Keep the exact owned directories/inodes, deleting only their contents.
         for path in paths:
             for item in path.iterdir():
-                if item.is_symlink():
-                    fail(f"output changed during cleanup: {item}")
-                if item.is_dir():
+                if stat.S_ISDIR(item.lstat().st_mode):
                     shutil.rmtree(item)
                 else:
+                    # Includes directory/file/dangling symlinks: unlink the entry.
                     item.unlink()
         return sizes
 

@@ -10,9 +10,9 @@ if [ ! -f "$script" ]; then
     exit 1
 fi
 
-MAINTAIN_WORKSHOP="$(cd "$(dirname "$0")/.." && pwd)"
+source "$(dirname "$0")/workshop-paths.sh"
+MAINTAIN_WORKSHOP=$(codexnk_workshop)
 export MAINTAIN_WORKSHOP
-source "$MAINTAIN_WORKSHOP/scripts/workshop-paths.sh"
 MAINTAIN_CHECKOUT=$(codexnk_checkout)
 export MAINTAIN_CHECKOUT
 export MAINTAIN_FORK_REPO=possibilities/codexnk-codex
