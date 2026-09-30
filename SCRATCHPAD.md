@@ -192,8 +192,23 @@
   checks for at least 8 GiB free before a build. Global Rust-home symlinks are
   unchanged. Offline macOS Cargo metadata resolved 1,268 package manifests with
   no Scratch paths. Internal free space was 30.36 GiB before rebuilding.
-  `run-internal-baseline.py` is running bounded baseline tests sequentially,
-  recording free space and command results between builds.
+  `run-internal-baseline.py` completed bounded baseline tests sequentially,
+  recording free space and command results between builds. All nine persistent
+  failures reproduced on the captured upstream with the same failure messages;
+  its snapshot writer correctly named `upstream-baseline`. The baseline controls
+  passed all six cases: four worktree cases with a process-local Git-ignore
+  override, the skills case with an empty `CODEX_HOME`, and the V8 case with its
+  `sandbox` feature matching the linked archive. The three WebRTC/RTP failures
+  remain upstream-reproduced timeouts, not an identified carry regression.
+- Switching the shared internal Cargo target from upstream to Integration exposed
+  stale cross-worktree artifacts: CLI compilation could not see the carry's
+  `LoaderOverrides.exclude_home_capabilities` field even though it exists in
+  the candidate source. All 159 workspace packages were cleaned (7.6 GiB),
+  retaining third-party dependencies. The target is now bound to the exact
+  Integration worktree/SHA via `cycle-source.json`. All nine required gates and
+  the candidate fixture-isolation controls are being rebuilt/rerun; distinct
+  `candidate-internal-gate-*` logs preserve the earlier receipts. Free space
+  after cleanup was 24.77 GiB. No source repair was made for this cache issue.
 - With the operator's cache-cleanup authorization, removed regenerable Bazel/Zig
   caches, Homebrew download/pip caches, UV's cache, and four abandoned July/August/
   September runtime-download staging directories with no open handles. Ran PNPM's
