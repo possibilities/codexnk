@@ -1,5 +1,39 @@
 # Scratchpad
 
+## Relocation handoff: READY, 2026-09-30
+
+The operator assigned this session coordination of relocation readiness. This
+section supersedes the earlier NOT READY observations below. Maintenance is
+delivered and the source/worktrees are quiescent for the relocation agent.
+
+- Verified identities and gracefully stopped all six orphan test processes:
+  35693, 39772, 44576, 79234, 79200 and 79208; confirmed they exited.
+- Rebound session `ses_f11c2434effeqFYM5aVs0b8nRY` to `/Users/arthack`.
+  Evicted the old Integration location from the shared OpenCode server. An idle
+  standalone frontend repeatedly recreated its old services, so its absence of
+  active sessions was verified before gracefully closing frontend 1694 and its
+  server 1695. The current shared-server conversation and other active session
+  were preserved. Final `lsof` inspection found zero handles/cwds under the fork,
+  codexnk worktree tree or cycle Scratch target.
+- Physical relocation belongs to the receiving agent:
+  `~/source/openai--codex-codexnk` → `~/workshops/codexnk/fork`, and
+  `~/worktrees/codexnk/` → `~/workshops/codexnk/worktrees/`.
+  Preserve both maintenance and release-speed worktrees and their branch/detached
+  state. The agentstart, stack and workshop task worktrees belong to three other
+  common Git repositories; repair their registrations in those repositories too.
+  Update active Workshop path defaults/docs as part of relocation; historical
+  evidence retains original paths. No checkout has been moved by this session.
+- Preservation inventory, all four repositories' refs/worktree registrations,
+  process-stop receipts and final quiescence evidence are under
+  `/Volumes/Scratch/archive/codexnk-maintain-20260929-completed-20260930T125013Z/`.
+  Preserve the invocation worktree's untracked skills `.snap.new` (hash recorded
+  in `relocation-worktree-inventory.json`) and canonical Workshop's untracked
+  `scripts/__pycache__/`. AgentStart's unrelated fleet-map edit and Stack's local
+  unpublished history remain outside the move and must be preserved.
+- Installed v0.1.7 and vendor Codex bindings are independent of these source
+  paths. Cycle Scratch build cache is now unused; its removal is optional cleanup,
+  not a relocation prerequisite. Keep backups/recovery archives on Scratch.
+
 ## Delivered baseline: v0.1.7, 2026-09-30
 
 - On 2026-09-29 (2026-09-30 UTC), one atomic push using the original cycle leases
