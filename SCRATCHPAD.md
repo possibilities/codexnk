@@ -62,6 +62,16 @@
   observations, not authority to stop a later process that reuses one.
   Canonical Workshop has installer-generated untracked `scripts/__pycache__/`;
   it was preserved, as was the invocation carry's untracked failed skills snapshot.
+- After delivery the operator explicitly authorized reclaiming this cycle's own
+  disk usage. Removed the unused internal Rust/Cargo copy and isolated test
+  installation: 1.25 GiB total, leaving 47.27 GiB free internally. The large
+  internal target was already absent at inspection. Installed v0.1.7 receipt
+  hashes were reverified; source worktrees and live-process Scratch target remain.
+  Verification records and the isolated receipt were copied and hash-checked at
+  `/Volumes/Scratch/archive/codexnk-maintain-20260929-completed-20260930T125013Z/`.
+  Its `cleanup-receipt.json` records exact removed paths; `evidence-sha256.json`
+  binds the archived records. This later authorization changes only disposable
+  artifact cleanup, not the coordinator-owned checkout relocation.
 
 ## Prior delivered baselines
 
