@@ -109,8 +109,22 @@
   and credentials were not altered. Receipt: `publication-ssh.json`.
   Hosted Integration [37655756223](https://github.com/possibilities/codexnk-codex/actions/runs/37655756223)
   and invocation [37655758010](https://github.com/possibilities/codexnk-codex/actions/runs/37655758010)
-  are running for the exact published commits. Tag/release proof, install,
-  canonical consumer landing and cycle closure remain pending.
+  succeeded for the exact published commits, including all required test steps.
+  The waiter's summary initially asserted Integration's job name on the carry;
+  branch-specific workflow/job proof corrected the evidence summary without rerun.
+- Immutable `codexnk-v0.1.8` was created at frozen Integration after those hosted
+  gates passed. The tag was re-read and matches exactly. Release workflow
+  [37659784824](https://github.com/possibilities/codexnk-codex/actions/runs/37659784824)
+  is under native wait for focused tests, macOS/Linux builds and publication.
+  Archive verification, isolated/installed runtime proof, canonical consumer
+  landing and final cleanup remain pending. Completed local-build output was
+  reclaimed via a quiescent `checkpoint --clean`; all useful evidence remains
+  in the archive and the cycle is still open for consumer handover.
+- Pre-delivery retirement inventory records all nine owned trees, committed refs,
+  ignored-file hashes and activity. Four finished worker sessions were moved to
+  the stable canonical Workshop; source retirement still requires fresh
+  release/commit/evidence/activity checks after delivery. No unrelated process
+  or checkout was stopped or removed.
 
 ## Completed worktree retirement, 2026-09-30
 
