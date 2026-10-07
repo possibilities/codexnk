@@ -1,6 +1,83 @@
 # Scratchpad
 
-## Maintenance cycle in progress, 2026-10-07
+## Delivered baseline: v0.1.8, 2026-10-07
+
+- Cycle `maintain-20261007` delivered captured upstream
+  `95ec468619386ebb93506ac2091a48e5a558d25c`, Integration
+  `6ddf4f91251200f5e330d35a8e142fb4b435baa1`, invocation carry
+  `b582004b3c231a799513f582a5f83e58587c2ed7`, middleware carry
+  `85de7e0fc5ae769f741f02d6cbeb5e403f547016`, and runtime carry
+  `57ece4a6b30dabe33cfac49e6dbc6dcfedd879d3`. All carries are upstream-based
+  Integration ancestors. One original-leased atomic SSH transaction published
+  only those five refs after two HTTPS server-error rejections changed nothing.
+  Eleven unrelated heads were preserved at publication; ten Dependabot heads
+  subsequently moved independently and were preserved during handover.
+- Reviewed all 371 commits since the prior audited frontier:
+  [exact upstream interval](https://github.com/openai/codex/compare/b1e72963c3b71a9265a551e54beff078384efed9...95ec468619386ebb93506ac2091a48e5a558d25c).
+  Changes include Bedrock/model discovery and TUI input/navigation; V2 child
+  coordination, lineage and context; Guardian provenance/authorization recovery;
+  sandbox, DNS and credential hardening; history/transport reliability and Code
+  Mode discovery. Upstream's finalized realtime tails now persist history without
+  inference. No single release note covers this exact interval.
+- Dispositions: **0 retire, 2 repair, 1 unchanged**; **no material stance change**.
+  Invocation axes required only host-local test-path compatibility with upstream's
+  `LegacyAppPathString`. Middleware retains native extension data/root lineage
+  and gates history-only realtime tails before persistence, without inference.
+  Runtime companions replay unchanged. `MAINTAIN.md` clarifies tail admission;
+  downstream-only stance and scoped credential restrictions remain necessary.
+  Malformed-replacement, concurrent-admission and journal byte-capacity repairs
+  fix inherited contract defects, not upstream accommodations.
+- Eight intended fail-before cases reproduced on both attempts. All nine exact
+  candidate gates passed (354 tests), plus five focused Core/stock-tail cases:
+  **359 accepted local tests**. No complete-suite authorization was obtained;
+  no full-suite success is claimed. Prepared consumers passed AgentStart's full
+  validation, 84 Stack settings/Bots/client/installer tests and 17 Workshop
+  installer tests. AgentStart's unchanged security fixture failed on Scratch's
+  mode-0775 ancestor and passed on the explicitly approved private macOS path;
+  no security code or volume permissions changed, and its fixture was removed.
+- Exact-SHA [Integration CI 37655756223](https://github.com/possibilities/codexnk-codex/actions/runs/37655756223)
+  and [invocation CI 37655758010](https://github.com/possibilities/codexnk-codex/actions/runs/37655758010)
+  passed. Immutable [codexnk-v0.1.8](https://github.com/possibilities/codexnk-codex/releases/tag/codexnk-v0.1.8)
+  points at frozen Integration; [release workflow 37659784824](https://github.com/possibilities/codexnk-codex/actions/runs/37659784824)
+  passed focused tests, both builds and publication. Both archives passed exact-tag,
+  digest/size, member/mode and metadata verification. macOS: 140,182,850 bytes,
+  SHA-256 `9c3f47a58be5e7441c275876c9efb458ed981c4aab3ae12268de02b364c9a3ee`;
+  Linux: 405,239,811 bytes,
+  SHA-256 `8b1b86c757bda6cfc52aae9f3cc43a0d85052316955894da5b9d10c1c632fe17`.
+- Isolated and installed release proof passed three native cases with zero skips
+  (Role refresh/orientation, private runtime/defaults, cross-client middleware
+  interception/read/completion), four malformed replacements, and packaged Code
+  Mode file-read/count/SHA-256 with in-process fallback disabled. The first
+  isolated probe passed behavior but its direct cleanup raced a plugin clone.
+  Original failure evidence is preserved; identity/activity-checked socket
+  removal and mandatory recovery checkpoint passed. A fresh identical isolated
+  package ran only the missing host proof; accepted tests were not repeated.
+  Harness-only cleanup now defers Scratch homes to the helper. Installed v0.1.8
+  at `~/.local/libexec/codexnk/codex` matches its per-file v2 ownership receipt.
+  Prior packages and the separate vendor Codex remain unchanged; no resident
+  Bot/owner or application was restarted.
+- AgentStart `ed76b807aecdec193353eb68dfa8afaab10df918` is landed and pushed.
+  Stack `dff25c5e4b9ef689b6eb951e5c1f2dca3c2389a4` is landed locally only;
+  remote main remains `a0d11c04d39da964df13093f55ffb7f075d2c29e`. Both canonical
+  pins select v0.1.8/frozen Integration; AgentStart's existing shim binds the
+  absolute owned runtime path. No broad fleet convergence was performed.
+- Local declared refs match the verified public graph, and the clean bound
+  upstream mirror advanced by fast-forward. Pinned check/apply/check and
+  supervision verification passed; apply changed no public head. Ten independently
+  moved Dependabot heads were observed, not overwritten or used as new leases.
+- Evidence: `/Volumes/Scratch/archive/codexnk-cycles/maintain-20261007/`, including
+  `parent-acceptance.md`, release/runtime summaries, publication/landing receipts
+  and retirement inventories. Final output cleanup and per-tree retirement
+  dispositions are recorded in the closure entry below after Workshop delivery.
+  Remaining unrelated attention: Stack's eight pre-existing duplicate ADR IDs
+  (document checker is not green), and the existing private-runtime
+  `TempDir::keep()` copied-credential-retention follow-up. No product decision or
+  upstream correspondence is pending.
+
+## Historical preparation and recovery, 2026-10-07
+
+The following intermediate observations are superseded by the delivered baseline
+above; they preserve the original gate/publication/recovery boundaries.
 
 - Cycle `maintain-20261007` captured upstream
   `95ec468619386ebb93506ac2091a48e5a558d25c` after saving all 16 public heads
@@ -577,6 +654,15 @@ their pending-work and old consumer-pin statements. Retained for relocation hand
 
 ## Audited upstream frontier
 
+- Complete through `95ec468619386ebb93506ac2091a48e5a558d25c` on 2026-10-07.
+  Reviewed all 371 commits since `b1e72963c3b71a9265a551e54beff078384efed9`:
+  [audited interval](https://github.com/openai/codex/compare/b1e72963c3b71a9265a551e54beff078384efed9...95ec468619386ebb93506ac2091a48e5a558d25c).
+  Groups and semantic proof are recorded in the v0.1.8 delivery entry and cycle
+  `upstream-audit.md`. Dispositions: **0 retire, 2 repair, 1 unchanged**.
+  No material stance change; no carried behavior became redundant.
+
+Previous frontiers:
+
 - Complete through `b1e72963c3b71a9265a551e54beff078384efed9` on 2026-09-30.
   Reviewed all 215 commits since `e154f7b80789b742b162cf0e44de0bc021068a20`:
   [audited interval](https://github.com/openai/codex/compare/e154f7b80789b742b162cf0e44de0bc021068a20...b1e72963c3b71a9265a551e54beff078384efed9).
@@ -587,8 +673,6 @@ their pending-work and old consumer-pin statements. Retained for relocation hand
   Downstream-only stance remains; approved material scope narrowing rejects
   keyring-only enterprise MCP and selected model-provider gateway OAuth in
   three-axis mode. Ordinary runtime-file MCP OAuth and no-flags behavior remain.
-
-Previous frontier:
 
 - Complete through `e154f7b80789b742b162cf0e44de0bc021068a20` on
   2026-09-24. The previous frontier was
@@ -605,7 +689,15 @@ Previous frontier:
 
 ## Carry: invocation axes
 
-- Current published tip: `73c2f483b8e9d64fdc7ea7ec8d9e54b2ed7ff624`, integrated
+- Current published tip: `b582004b3c231a799513f582a5f83e58587c2ed7`, integrated
+  at `6ddf4f91251200f5e330d35a8e142fb4b435baa1`. **Repair**, test compatibility
+  only: convert upstream's `LegacyAppPathString` fixture before locating the
+  private runtime. Sixteen original patches remain equivalent; production
+  isolation and approved credential restrictions are unchanged. Exact candidate,
+  hosted, isolated and installed proofs pass. Retire only when upstream satisfies
+  all three axes and their isolation rules. No upstream offer. Prior history:
+
+- Previous published tip: `73c2f483b8e9d64fdc7ea7ec8d9e54b2ed7ff624`, integrated
   at `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`. **Repair**: preserve launch
   restrictions across config equality, retained-session refresh and agent-role
   reconstruction; filter cached home marketplaces; enforce runtime-file credential
@@ -641,7 +733,16 @@ Previous frontier:
 
 ## Carry: input middleware
 
-- Current published tip: `b3705e387f2115b48351192a3394d8150e43e61d`, integrated
+- Current published tip: `85de7e0fc5ae769f741f02d6cbeb5e403f547016`, integrated
+  at `6ddf4f91251200f5e330d35a8e142fb4b435baa1`. **Repair**: preserve native
+  extension data/root lineage and gate history-only terminal realtime tails
+  without inference. Eight tail cases and four unowned lifecycle cases pass.
+  Inherited malformed/concurrent/byte-capacity defects are also repaired;
+  fail-before controls and candidate/installed proofs pass. Generated protocol
+  exports and Python SDK align. Retire only when upstream provides the owner,
+  admission journal, recovery and exact-input disposition contract. Prior history:
+
+- Previous published tip: `b3705e387f2115b48351192a3394d8150e43e61d`, integrated
   at `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`. **Repair**: adapt the gate to
   upstream's native start/steer and accepted-turn trace, preserving interception
   before native dispatch. Stable/experimental exports regenerated. Protocol,
@@ -670,7 +771,15 @@ Previous frontier:
 
 ## Carry: runtime companions
 
-- Current published tip: `c8ec723729b001d4f40232df5d249c90ffa5aa2d`, integrated
+- Current published tip: `57ece4a6b30dabe33cfac49e6dbc6dcfedd879d3`, integrated
+  at `6ddf4f91251200f5e330d35a8e142fb4b435baa1`. **Unchanged** semantic replay:
+  both original patches remain equivalent. Rich release workflow, timing artifacts,
+  benchmarks and `codex-*` selection remain. Both v0.1.8 archives and isolated/
+  installed packaged-host execution pass. Retire only when upstream's distributable
+  package supplies equivalent companions/layout and digest-bound Linux bwrap.
+  Prior history:
+
+- Previous published tip: `c8ec723729b001d4f40232df5d249c90ffa5aa2d`, integrated
   at `3aae20d1ad1d41734b7303b4f0a4bfe95eb56d8c`. **Unchanged** semantic replay:
   package layout, code-mode companion and digest-bound Linux bwrap remain needed.
   Both v0.1.7 archives and isolated host execution pass. Prior history:
