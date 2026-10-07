@@ -105,9 +105,12 @@ release binary; AgentStart selects it through its managed shim.
   restores it. Disconnect retains the registered pass/reject unavailable
   policy until a new owner attaches.
 - The same Core gate accepts direct, single plain-text human `turn/start` and
-  `turn/steer` input and finalized realtime handoff/tail text before the
-  working agent starts or steers. A registered typed submission needs a stable
-  `clientUserMessageId`. A handoff's existing working-agent text may include
+  `turn/steer` input and finalized realtime handoff/tail text before
+  native submission or transcript persistence. A terminal realtime tail persists
+  admitted text as history only, without inference; interception or rejection
+  creates neither a transcript tail nor a working turn. A registered typed
+  submission needs a stable `clientUserMessageId`. A handoff's existing
+  working-agent text may include
   realtime context wrapping; the middleware sees and may replace that entire
   submitted text. This does not intercept every spoken utterance, suppress
   hosted realtime speech, or cover queued, multimodal, tool, internal or

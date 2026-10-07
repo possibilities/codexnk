@@ -1,5 +1,91 @@
 # Scratchpad
 
+## Maintenance cycle in progress, 2026-10-07
+
+- Cycle `maintain-20261007` captured upstream
+  `95ec468619386ebb93506ac2091a48e5a558d25c` after saving all 16 public heads
+  as publication leases. The exact upstream object was fetched once. The audit
+  interval from `b1e72963c3b71a9265a551e54beff078384efed9` contains 371 commits;
+  the audited frontier has not advanced yet.
+- Both canonical checkouts were clean. Startup retirement review found no
+  retained historical maintenance worktrees; the 11 completed trees were
+  already retired by the recorded 2026-09-30 coordinator. Unrelated AgentStart
+  and Stack worktrees are outside this cycle's ownership.
+- Scratch is mounted. The mandatory helper owns one shared non-incremental
+  target and temporary directory under `/Volumes/Scratch/codexnk-cycles/maintain-20261007`.
+  Leases, fetch provenance, initial inventories and interval evidence are under
+  `/Volumes/Scratch/archive/codexnk-cycles/maintain-20261007/`.
+- The coordinator owns the Workshop task tree at
+  `worktrees/maintain-20261007/workshop` on `worktree/maintain-20261007`;
+  retain it for the audit, delivery record and final coordinator-owned retirement.
+  The prior v0.1.7 publication, installed package and consumer pins remain intact.
+- Source audit dispositions are complete: **0 retire, 2 repair, 1 unchanged**.
+  Invocation axes needs only the host-local skill-path test conversion for
+  upstream's `LegacyAppPathString`; its production restrictions remain necessary.
+  Middleware must preserve native turn extension data/lineage and gate new
+  history-only realtime tail persistence without inference. Runtime packaging
+  replays unchanged. No material stance change or unresolved product decision.
+  `MAINTAIN.md` clarifies admission before transcript persistence and native
+  history-only terminal tails; it does not exempt tails from middleware.
+- Separate middleware contract defects found by the audit are being repaired:
+  malformed replacements must follow `onUnavailable` and be journaled; bounded
+  concurrent admission must not defeat the registered pass policy. These are
+  pre-existing defects, not upstream accommodations. Independent source reports,
+  assignments and the disposition ledger live in the cycle archive. Builds,
+  candidate gates, publication and consumer delivery remain pending.
+- Invocation-axes carry replay is accepted at
+  `b582004b3c231a799513f582a5f83e58587c2ed7`; all 16 original patches remain
+  equivalent, with only the five-line test conversion added. Its formatting and
+  workflow checks passed. Runtime-companion replay at
+  `57ece4a6b30dabe33cfac49e6dbc6dcfedd879d3` preserves both original patches.
+- A live isolated probe against the still-installed v0.1.7 reproduced the
+  malformed-replacement defect for both empty and 32769-character replies under
+  both unavailable policies: rejection without any journal record. Exact
+  pre-fix evidence is `installed-prefix-invalid-replacements.json` in the archive.
+  The probe made no model request and removed its own temporary socket fixture.
+- The middleware and closure workers returned committed source and stopped
+  writing. Stable/experimental protocol exports and the Python SDK regenerated
+  successfully. Parent composed the implementation, generated exports, fixture
+  compiler repairs and journal byte-capacity repair into independent middleware
+  `85de7e0fc5ae769f741f02d6cbeb5e403f547016` and frozen Integration
+  `6ddf4f91251200f5e330d35a8e142fb4b435baa1`. Final formatting and scoped fixes
+  passed; unrelated upstream Clippy edits were restored. All carries are
+  upstream-based candidate ancestors and clean; middleware files match. After
+  saving evidence, the clean-candidate rebuild is running all nine gates plus
+  focused Core commitment and stock-tail checks. Passing proof remains pending.
+- A separate cycle-owned `middleware-negative-control` worktree preserves the
+  combined tests while restoring the two pre-existing defective admission paths.
+  Its worker prepares source only; the coordinator owns all serial Scratch
+  execution and acceptance. This tree is evidence preparation, never a candidate
+  or publication target. The nine final-candidate gates have not run.
+- Independent closure review found three realtime regression-fixture defects
+  and an inherited journal byte-capacity defect. Returned repairs use actual
+  backend socket closure for overlap, consume legitimate active-turn notices,
+  retain explicit-stop lifecycle semantics, and enforce the loader's existing
+  160-MiB cap before acknowledgment. Parent accepts the source and intended
+  fail-before controls; positive proof remains pending. No publication or
+  consumer state has advanced.
+- The Core malformed-commitment regression compiled and failed on the isolated
+  pre-fix control for the intended reason: a dropped commitment channel and a
+  subsequent steer incorrectly refused. Both Nextest attempts reproduced it;
+  the post-batch cycle checkpoint passed. The updated app-server control compiled
+  and all seven malformed/concurrency/capacity cases failed on both attempts for
+  intended contract reasons, with zero passes. Its immediate cleanup refusal
+  observed an exiting fixture PID 14283; that process had exited before inspection
+  and the required resumption checkpoint passed. No process was stopped and no
+  cleanup boundary was waived. Passing candidate proof remains pending.
+- Exact v0.1.8/candidate consumer preparation is committed in isolated trees:
+  AgentStart `ed76b807aecdec193353eb68dfa8afaab10df918` and Stack
+  `dff25c5e4b9ef689b6eb951e5c1f2dca3c2389a4`. Stack's native schema exactly
+  matches the candidate; existing managed settings remain supported. Installer,
+  client bundle and UI test fixtures align, and the terminal-tail description now
+  correctly says history-only persistence without inference. Package tests and
+  live release proof still gate handover; no consumer commit is landed.
+- Stack's document checker reports eight pre-existing duplicate ADR IDs, reproduced
+  unchanged in its canonical starting checkout. This cycle does not repair that
+  unrelated debt or claim the document check is green. Exact records are in
+  `parent-acceptance.md` in the cycle archive.
+
 ## Completed worktree retirement, 2026-09-30
 
 - The operator confirmed no Workshop work remained active and authorized
