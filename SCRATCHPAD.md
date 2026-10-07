@@ -67,12 +67,51 @@
   moved Dependabot heads were observed, not overwritten or used as new leases.
 - Evidence: `/Volumes/Scratch/archive/codexnk-cycles/maintain-20261007/`, including
   `parent-acceptance.md`, release/runtime summaries, publication/landing receipts
-  and retirement inventories. Final output cleanup and per-tree retirement
+  and retirement inventories. Output cleanup and per-tree retirement
   dispositions are recorded in the closure entry below after Workshop delivery.
   Remaining unrelated attention: Stack's eight pre-existing duplicate ADR IDs
   (document checker is not green), and the existing private-runtime
   `TempDir::keep()` copied-credential-retention follow-up. No product decision or
   upstream correspondence is pending.
+
+## Cycle closure and worktree handoff, 2026-10-07
+
+- Workshop delivery was published at `cee6e4fc0d1029215ef921757942bf0b8d70e78f`.
+  The coordinator's native session moved to the stable canonical Workshop.
+  All nine owned trees received fresh common-repository, registration, branch/
+  commit, tracked/untracked/ignored-content and complete activity review.
+- Retired **four** delivered, quiescent trees: `runtime-companions`, `integration`,
+  `agentstart` and `stack`. Every branch remains at its exact accepted commit.
+  Classified regenerable caches were removed only after fresh hash/ownership/
+  activity checks; twelve useful JUnit/build-log files (including evidence from
+  the retained negative control) were individually archived and hash-verified.
+  Removal used each actual common repository's `git worktree remove`, from its
+  stable checkout, with no force/reset/stash/prune or unrelated process shutdown.
+- Retained **five** exact trees under `worktrees/maintain-20261007/`, not for
+  development but because cached OpenCode/MCP/Computer Use processes still hold
+  their locations after native session moves. All source is committed and accepted.
+  The observed V2 CLI cannot dispose the active host's locations: its explicit
+  endpoint returned an incompatible health response. No app/server restart is
+  authorized as a cleanup shortcut. Each tree has this explicit handoff:
+
+  | Tree | Responsible owner | Retention reason | Next step |
+  | --- | --- | --- | --- |
+  | `invocation-axes` | Maintenance coordinator | Cached host/tool cwd and directory handles | OpenCode operator releases this exact location; coordinator rechecks and retires. |
+  | `input-middleware` | Maintenance coordinator | Cached host/tool cwd and directory handles | OpenCode operator releases this exact location; coordinator rechecks and retires. |
+  | `middleware-negative-control` | Maintenance coordinator | Cached host/tool cwd and directory handles; JUnit is archived | OpenCode operator releases this exact location; coordinator rechecks and retires. |
+  | `middleware-closure-repair` | Maintenance coordinator | Cached host/tool cwd and directory handles | OpenCode operator releases this exact location; coordinator rechecks and retires. |
+  | `workshop` | Maintenance coordinator | Cached host/tool cwd and directory handles despite coordinator session move | Finish publishing this closure record, then operator releases this exact location; coordinator rechecks and retires. |
+
+  Use the active compatible host, preserve other sessions, and never stop a PID
+  from a historical receipt. Next `/maintain` must review these five retained
+  completed-cycle trees before starting new work. Exact activity, preserved refs,
+  evidence paths/sizes/hashes and per-tree results are in
+  `worktree-retirement-summary.json` and `retirement-<tree>.json` in the cycle archive.
+- Mandatory `cycle.py final maintain-20261007 --evidence-saved` succeeded after
+  saving and independently verifying all useful evidence. `final.json` closes
+  the cycle; target/tmp contents are empty and ownership/lock receipts remain.
+  No build/test/release/consumer work remains pending. Retained source is outside
+  the helper's output cleanup scope.
 
 ## Historical preparation and recovery, 2026-10-07
 
