@@ -18,7 +18,8 @@
 - The coordinator owns the Workshop task tree at
   `worktrees/maintain-20261007/workshop` on `worktree/maintain-20261007`;
   retain it for the audit, delivery record and final coordinator-owned retirement.
-  The prior v0.1.7 publication, installed package and consumer pins remain intact.
+   The installed v0.1.7 package and consumer pins remain intact; the new graph is
+   now published, with hosted/release proof and consumer handover pending.
 - Source audit dispositions are complete: **0 retire, 2 repair, 1 unchanged**.
   Invocation axes needs only the host-local skill-path test conversion for
   upstream's `LegacyAppPathString`; its production restrictions remain necessary.
@@ -31,8 +32,8 @@
   malformed replacements must follow `onUnavailable` and be journaled; bounded
   concurrent admission must not defeat the registered pass policy. These are
   pre-existing defects, not upstream accommodations. Independent source reports,
-  assignments and the disposition ledger live in the cycle archive. Builds,
-  candidate gates, publication and consumer delivery remain pending.
+   assignments and the disposition ledger live in the cycle archive. Candidate
+   gates now pass; branch publication succeeded and consumer delivery remains pending.
 - Invocation-axes carry replay is accepted at
   `b582004b3c231a799513f582a5f83e58587c2ed7`; all 16 original patches remain
   equivalent, with only the five-line test conversion added. Its formatting and
@@ -51,20 +52,22 @@
   `6ddf4f91251200f5e330d35a8e142fb4b435baa1`. Final formatting and scoped fixes
   passed; unrelated upstream Clippy edits were restored. All carries are
   upstream-based candidate ancestors and clean; middleware files match. After
-  saving evidence, the clean-candidate rebuild is running all nine gates plus
-  focused Core commitment and stock-tail checks. Passing proof remains pending.
+  saving evidence, the clean-candidate rebuild passed all nine required gates:
+   354 tests passed, including all twenty middleware cases. Focused Core commitment
+   and four stock-tail cases also passed, for 359 accepted local tests.
 - A separate cycle-owned `middleware-negative-control` worktree preserves the
   combined tests while restoring the two pre-existing defective admission paths.
   Its worker prepares source only; the coordinator owns all serial Scratch
   execution and acceptance. This tree is evidence preparation, never a candidate
-  or publication target. The nine final-candidate gates have not run.
+   or publication target. All eight intended fail-before cases and the nine
+   final-candidate gates have completed; retain the control through delivery.
 - Independent closure review found three realtime regression-fixture defects
   and an inherited journal byte-capacity defect. Returned repairs use actual
   backend socket closure for overlap, consume legitimate active-turn notices,
   retain explicit-stop lifecycle semantics, and enforce the loader's existing
   160-MiB cap before acknowledgment. Parent accepts the source and intended
-  fail-before controls; positive proof remains pending. No publication or
-  consumer state has advanced.
+   fail-before controls; positive candidate proof now passes. Publication advanced
+   only after prerequisite gates; consumer state has not advanced.
 - The Core malformed-commitment regression compiled and failed on the isolated
   pre-fix control for the intended reason: a dropped commitment channel and a
   subsequent steer incorrectly refused. Both Nextest attempts reproduced it;
@@ -73,7 +76,11 @@
   intended contract reasons, with zero passes. Its immediate cleanup refusal
   observed an exiting fixture PID 14283; that process had exited before inspection
   and the required resumption checkpoint passed. No process was stopped and no
-  cleanup boundary was waived. Passing candidate proof remains pending.
+  cleanup boundary was waived. Candidate middleware proof is now passing.
+- The final gate's cleanup saw an exiting fixture PID 85885 and interrupted
+  summary writing after its test passed. That process had exited at parent
+  inspection and the mandatory checkpoint passed. Exact receipts reconstruct
+  the accepted summary, preserving cleanup failures and repeating no tests.
 - Exact v0.1.8/candidate consumer preparation is committed in isolated trees:
   AgentStart `ed76b807aecdec193353eb68dfa8afaab10df918` and Stack
   `dff25c5e4b9ef689b6eb951e5c1f2dca3c2389a4`. Stack's native schema exactly
@@ -84,7 +91,26 @@
 - Stack's document checker reports eight pre-existing duplicate ADR IDs, reproduced
   unchanged in its canonical starting checkout. This cycle does not repair that
   unrelated debt or claim the document check is green. Exact records are in
-  `parent-acceptance.md` in the cycle archive.
+   `parent-acceptance.md` in the cycle archive.
+- Prepared Stack consumer builds and 84 settings/Bots/client/installer tests pass;
+  17 Workshop installer tests also pass. Skipped live-release tests are not proof.
+  AgentStart validation initially failed because its unchanged security fixture
+  rejects Scratch's group-writable volume root. The operator approved small
+  AgentStart fixtures only in a uniquely owned private macOS temporary directory;
+  targets, builds, release downloads and evidence remain on Scratch. The unchanged
+  baseline failed on Scratch and passed on the approved path; full prepared
+  validation passed. Identity/activity-checked private cleanup and the helper
+  checkpoint passed. The original failure is preserved; no permissions/security
+  code changed.
+- Atomic publication using all five original leases succeeded through verified
+  existing SSH after two HTTPS Internal Server Error rejections left all refs
+  unchanged. Public upstream mirror, frozen Integration and the three carries
+  now match the manifest; eleven unrelated heads are unchanged. Remote configuration
+  and credentials were not altered. Receipt: `publication-ssh.json`.
+  Hosted Integration [37655756223](https://github.com/possibilities/codexnk-codex/actions/runs/37655756223)
+  and invocation [37655758010](https://github.com/possibilities/codexnk-codex/actions/runs/37655758010)
+  are running for the exact published commits. Tag/release proof, install,
+  canonical consumer landing and cycle closure remain pending.
 
 ## Completed worktree retirement, 2026-09-30
 
