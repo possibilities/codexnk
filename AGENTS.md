@@ -22,7 +22,8 @@ Every local maintenance cycle must use `python3 scripts/cycle.py` as specified
 in `MAINTAIN.md`: one Scratch target shared across the cycle's worktrees,
 non-incremental builds by default, phase checkpoints, and final cleanup after
 saving evidence. Missing Scratch or uncertain ownership/activity blocks cleanup
-and builds; never fall back to worktree-local targets or internal-disk output.
+and builds; never fall back to worktree-local targets or internal-disk build output.
+Small private validation fixtures follow the scoped exceptions in `MAINTAIN.md`.
 At each `/maintain` start, review retained completed-cycle worktrees. After
 delivery, the coordinator must retire finished cycle-owned worktrees from
 outside them using the evidence/commit/activity checks in `MAINTAIN.md`, or

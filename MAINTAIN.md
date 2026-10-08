@@ -66,6 +66,15 @@ release binary; AgentStart selects it through its managed shim.
 - `--identity` supplies `auth.json` only. The file is copied into a private
   runtime directory and the identity directory is not written. Credential
   storage for that process is the file, not the OS keyring.
+- The process owns its private runtime directory through app-server startup and
+  operation, then removes it on ordinary shutdown (EOF or supported termination),
+  preparation/startup failure, and intentional forced app-server exit. Cleanup
+  removes copied credentials and capabilities, not the source identity or linked
+  shared history. Ordinary cleanup errors propagate; emergency watchdog cleanup
+  attempts removal synchronously before its nonzero exit, and managed forced
+  cleanup failure also exits nonzero without waiting for blocked runtime teardown.
+  Uncatchable termination, power loss or filesystem removal failure cannot
+  guarantee removal; historical runtime directories are not swept implicitly.
 - `--capabilities` supplies user skills from `skills/` when that directory
   exists, MCP servers from `[mcp_servers]` and project trust decisions from
   `[projects]` in `config.toml`, and developer instructions from
@@ -262,6 +271,16 @@ directory under `/private/tmp`. Keep its exact path in the cycle evidence,
 scope its cleanup to that fixture, and remove it on success/failure after its
 processes exit. That exception never applies to Cargo targets, large temporary
 output or evidence. The cycle helper does not sweep `/private/tmp`.
+
+Small AgentStart validation fixtures that require owner-only ancestors may use a
+uniquely created private macOS temporary directory. This is a standing operator
+exception; no per-cycle approval is needed. Record the exact path and ownership
+in cycle evidence, keep the validation command under `cycle.py run` with only
+its fixture temporary-directory environment redirected, and verify quiescence
+before removing that exact owned fixture on success or failure. Cargo targets,
+build output, release downloads and evidence remain on Scratch. Preserve the
+security checks and volume permissions; this exception grants neither changes
+to those checks nor cleanup of other temporary directories.
 
 Source/worktrees, untracked source evidence, shared package/Cargo/Rust caches,
 installed release packages and legacy targets are outside the helper's cleanup

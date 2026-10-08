@@ -1,5 +1,43 @@
 # Scratchpad
 
+## In progress: runtime lifetime repair and ADR identities, 2026-10-07
+
+- Explicit operator request: solve, land and ship private-runtime credential
+  retention and Stack's eight duplicate ADR IDs. Cycle
+  `runtime-lifetime-20261007` retains delivered upstream
+  `95ec468619386ebb93506ac2091a48e5a558d25c`; no upstream fetch, new audit or
+  audited-frontier movement. Original public-head leases are captured in the
+  new cycle archive; proposed release is unused `codexnk-v0.1.9`.
+- Installed v0.1.8 reproduces copied-credential retention after successful EOF,
+  successful SIGTERM and failed preparation. Invocation repair owns `TempDir`
+  through process operation. Independent review identified stdio's destructor-
+  bypassing watchdog and cleanup-error fallback into blocked forced-exit teardown;
+  both repairs are source-reviewed and accepted at invocation carry
+  `5c4166b643` and frozen Integration
+  `f90eede076ea40885897c5f2e165b4d48f0fb28f`. The watchdog also reproduces on
+  v0.1.8 with credentials retained after its status-1 exit. All nine required
+  exact-candidate gates are running serially. Publication/consumer binding still
+  selects v0.1.8; no resident restart is authorized.
+- Stack's identity-only repair is landed on local main at
+  `6e6d53b9f1699698695d2ff19bf333a2ab5a3939`. Eight records now use 0171–0178;
+  all 178 IDs/headings are unique, decision bodies/dates remain unchanged, links
+  and historical mappings are updated. Canonical document check has zero errors
+  and warnings. Remote Stack main and unrelated unpublished history are preserved;
+  no Stack push was made.
+- The operator now grants a standing exception for small private AgentStart
+  validation fixtures; `MAINTAIN.md` records exact ownership/evidence/activity
+  cleanup boundaries. Targets, build output, downloads and evidence stay on
+  Scratch; security checks and volume permissions are not changed.
+- Startup review of all five prior-cycle retained worktrees verifies unchanged
+  clean heads and durable refs; each still has 16 cached tool-service location
+  handles. Their explicit coordinator/operator-release handoffs remain in force.
+- Evidence and active ownership: `/Volumes/Scratch/archive/codexnk-cycles/runtime-lifetime-20261007/`.
+  AgentStart and Stack have committed v0.1.9/exact-candidate pins only in task
+  worktrees. Stack's clean source was re-created from its preserved branch at
+  `/Volumes/Scratch/worktrees/stack/runtime-lifetime-20261007/stack` for builds;
+  concurrently landed Scrape tests are preserved in its candidate. Local gates,
+  immutable release, consumer handover and final cleanup remain pending.
+
 ## Delivered baseline: v0.1.8, 2026-10-07
 
 - Cycle `maintain-20261007` delivered captured upstream
