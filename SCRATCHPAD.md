@@ -1,58 +1,77 @@
 # Scratchpad
 
-## In progress: runtime lifetime repair and ADR identities, 2026-10-07
+## Delivered: v0.1.9 runtime lifetime repair and ADR identities, 2026-10-08
 
-- Explicit operator request: solve, land and ship private-runtime credential
-  retention and Stack's eight duplicate ADR IDs. Cycle
-  `runtime-lifetime-20261007` retains delivered upstream
-  `95ec468619386ebb93506ac2091a48e5a558d25c`; no upstream fetch, new audit or
-  audited-frontier movement. Original public-head leases are captured in the
-  new cycle archive; proposed release is unused `codexnk-v0.1.9`.
-- Installed v0.1.8 reproduces copied-credential retention after successful EOF,
-  successful SIGTERM and failed preparation. Invocation repair owns `TempDir`
-  through process operation. Independent review identified stdio's destructor-
-  bypassing watchdog and cleanup-error fallback into blocked forced-exit teardown;
-  both repairs are source-reviewed and accepted at invocation carry
-  `5c4166b643` and frozen Integration
-  `f90eede076ea40885897c5f2e165b4d48f0fb28f`. The watchdog also reproduces on
-  v0.1.8 with credentials retained after its status-1 exit. All nine required
-  exact-candidate gates passed (356 tests), as did six stock stdio shutdown tests
-  and fresh credential-present EOF/SIGTERM probes. Late cleanup refusals saw only
-  exiting fixture children; preserved command receipts, fresh PID inspection and
-  helper checkpoints recovered without repeating passing tests. No full-suite
-  success is claimed, and no resident restart is authorized.
-- Stack's identity-only repair is landed on local main at
-  `6e6d53b9f1699698695d2ff19bf333a2ab5a3939`. Eight records now use 0171–0178;
-  all 178 IDs/headings are unique, decision bodies/dates remain unchanged, links
-  and historical mappings are updated. Canonical document check has zero errors
-  and warnings. Remote Stack main and unrelated unpublished history are preserved;
-  no Stack push was made.
-- The operator now grants a standing exception for small private AgentStart
-  validation fixtures; `MAINTAIN.md` records exact ownership/evidence/activity
-  cleanup boundaries. Targets, build output, downloads and evidence stay on
-  Scratch; security checks and volume permissions are not changed.
-- Startup review of all five prior-cycle retained worktrees verifies unchanged
-  clean heads and durable refs; each still has 16 cached tool-service location
-  handles. Their explicit coordinator/operator-release handoffs remain in force.
-- Evidence and active ownership: `/Volumes/Scratch/archive/codexnk-cycles/runtime-lifetime-20261007/`.
-  AgentStart and Stack have committed v0.1.9/exact-candidate pins only in task
-  worktrees. Stack's clean source was re-created from its preserved branch at
-  `/Volumes/Scratch/worktrees/stack/runtime-lifetime-20261007/stack` for builds;
-  concurrently landed Scrape tests are preserved in its candidate. AgentStart's
-  full validation, 84 Stack settings/Bots/client/installer tests, 17 Workshop
-  installer tests and all three document checks passed. Approved private fixtures
-  were removed after ownership/activity verification; no security code or volume
-  permissions changed.
-- One original-leased atomic transaction published only the five declared fork
-  refs; invocation carry and Integration advanced, others stayed fixed. Exact-SHA
+- Cycle `runtime-lifetime-20261007` fulfills the operator's request to solve,
+  land and ship private-runtime credential retention and Stack's eight duplicate
+  ADR IDs. Captured upstream remains
+  `95ec468619386ebb93506ac2091a48e5a558d25c`: no upstream fetch, new upstream
+  audit or audited-frontier movement. Integration is
+  `f90eede076ea40885897c5f2e165b4d48f0fb28f`; invocation carry is
+  `5c4166b643e6b4a76a1e6dcac4cca47d38248898`. Middleware
+  `85de7e0fc5ae769f741f02d6cbeb5e403f547016` and runtime companions
+  `57ece4a6b30dabe33cfac49e6dbc6dcfedd879d3` are unchanged ancestors.
+- The repair retains `TempDir` ownership through startup and operation, closes
+  it after app-server return, and removes the explicitly owned runtime before
+  both stdio watchdog hard exits. A managed forced exit still hard-exits after
+  cleanup failure, with nonzero status rather than entering blocked runtime
+  teardown. Independent source review accepted both fixes. Source Identity,
+  Capabilities and linked History are preserved; historical runtimes are not
+  swept. No cleanup promise is made for SIGKILL, power loss or filesystem failure.
+- Installed v0.1.8 reproduced retention after EOF, SIGTERM, failed preparation
+  and blocked-stderr watchdog exit. All nine exact-candidate gates passed
+  (356 tests), plus six stock shutdown tests and fresh credential-present EOF/
+  SIGTERM proof. Cleanup refusals observed exiting fixture children; original
+  failure receipts, PID inspection and helper checkpoints preserve the recovery
+  without rerunning accepted tests. No complete-suite success is claimed.
+- One atomic original-leased publication changed only invocation carry and
+  Integration among the five declared targets. Exact-SHA
   [Integration CI 37722344809](https://github.com/possibilities/codexnk-codex/actions/runs/37722344809)
   and [invocation CI 37722344757](https://github.com/possibilities/codexnk-codex/actions/runs/37722344757)
-  passed their branch-specific required steps. Immutable `codexnk-v0.1.9` was
-  created and re-read at frozen Integration. [Tag workflow 37835492620](https://github.com/possibilities/codexnk-codex/actions/runs/37835492620)
-  is under native wait. Both-package verification and isolated proof gate actual
-  installation. Canonical consumers still pin v0.1.8; consumer landing,
-  reconciliation and final cleanup remain pending. Concurrent AgentStart/Stack
-  landings will be preserved at handover; no Stack remote history is published.
+  passed. Immutable [codexnk-v0.1.9](https://github.com/possibilities/codexnk-codex/releases/tag/codexnk-v0.1.9)
+  resolves to Integration; [tag workflow 37835492620](https://github.com/possibilities/codexnk-codex/actions/runs/37835492620)
+  passed focused tests, both builds and publication. Both archives passed tag,
+  digest/size, member/mode and package metadata verification. macOS:
+  140,195,493 bytes, SHA-256
+  `42970e64cc19bea8343a4a0cb2e0462950194dc6977809bbdc1ccdf1b37caa7b`;
+  Linux: 405,263,610 bytes, SHA-256
+  `ee708b8264e71c18c9732474189ab78780fbce574f8d6820313b41309d7c1fa2`.
+- Isolated and installed releases each passed all four credential-removal paths,
+  three native Role/runtime/middleware tests with zero skips, and packaged Code
+  Mode file-read/count/SHA-256 with in-process fallback disabled. The owned
+  `~/.local/libexec/codexnk/codex` now selects receipt-verified v0.1.9. All six
+  prior packages remain hash-identical. Vendor `current` advanced independently
+  from 0.161.0 to 0.162.0 during the build wait; the initial preservation check
+  stopped before installation. Original evidence remains unchanged, and both
+  original binary and independently updated vendor binding were verified before/
+  after isolated and installed proof. No vendor state was modified or reverted.
+- Stack's identity-only repair `6e6d53b9f1699698695d2ff19bf333a2ab5a3939` is
+  landed: eight records use 0171–0178, all 178 IDs/headings are unique, decision
+  text/dates/status remain unchanged, and links/historical mappings are updated.
+  Document checks are green. The consumer pin is landed on canonical local main
+  `dc776c8a0fdf8d44f5945e13cea5860444ed14de`, preserving concurrently landed
+  Scrape/Role/Worker changes. Another actor independently advanced remote main
+  to `2940379a6eb8eff2cf4e3d8ed2a6691d919d6ad8`; this cycle made no Stack push.
+- AgentStart canonical main is `26a23c58636ecae5fc9532fb24728df6d0183f65`;
+  only pin commit `3bbf125d514225f352955ccd15ca16980c53be24` was published,
+  leaving two unrelated share-hardening commits locally preserved and unpublished.
+  Both consumers select v0.1.9/exact Integration. Fresh handover compositions
+  passed full AgentStart validation, 84 Stack tests and three installed-native
+  tests; original preparation also passed 17 Workshop installer tests. The
+  unchanged AgentStart shim still binds the absolute owned path. No broad fleet
+  convergence or resident application/Bot/owner restart was performed.
+- The operator's standing exception for small private AgentStart validation
+  fixtures is recorded in `MAINTAIN.md`. Both validation phases removed those
+  exact fixtures after ownership/activity checks; build output, downloads and
+  evidence stayed on Scratch. Security checks and volume permissions are unchanged.
+- Local declared refs match the published graph. Pinned reconciliation check/
+  apply/check and supervision verification passed; apply changed no public head.
+  All useful evidence is under
+  `/Volumes/Scratch/archive/codexnk-cycles/runtime-lifetime-20261007/`.
+  Startup review of the five retained prior-cycle trees reconfirmed their cached
+  tool-service bindings and explicit operator-release/coordinator-recheck handoffs.
+  New-cycle source retirement and final output cleanup are recorded below after
+  Workshop publication; only that closure remains pending.
 
 ## Delivered baseline: v0.1.8, 2026-10-07
 
