@@ -16,8 +16,11 @@
   `5c4166b643` and frozen Integration
   `f90eede076ea40885897c5f2e165b4d48f0fb28f`. The watchdog also reproduces on
   v0.1.8 with credentials retained after its status-1 exit. All nine required
-  exact-candidate gates are running serially. Publication/consumer binding still
-  selects v0.1.8; no resident restart is authorized.
+  exact-candidate gates passed (356 tests), as did six stock stdio shutdown tests
+  and fresh credential-present EOF/SIGTERM probes. Late cleanup refusals saw only
+  exiting fixture children; preserved command receipts, fresh PID inspection and
+  helper checkpoints recovered without repeating passing tests. No full-suite
+  success is claimed, and no resident restart is authorized.
 - Stack's identity-only repair is landed on local main at
   `6e6d53b9f1699698695d2ff19bf333a2ab5a3939`. Eight records now use 0171–0178;
   all 178 IDs/headings are unique, decision bodies/dates remain unchanged, links
@@ -35,8 +38,21 @@
   AgentStart and Stack have committed v0.1.9/exact-candidate pins only in task
   worktrees. Stack's clean source was re-created from its preserved branch at
   `/Volumes/Scratch/worktrees/stack/runtime-lifetime-20261007/stack` for builds;
-  concurrently landed Scrape tests are preserved in its candidate. Local gates,
-  immutable release, consumer handover and final cleanup remain pending.
+  concurrently landed Scrape tests are preserved in its candidate. AgentStart's
+  full validation, 84 Stack settings/Bots/client/installer tests, 17 Workshop
+  installer tests and all three document checks passed. Approved private fixtures
+  were removed after ownership/activity verification; no security code or volume
+  permissions changed.
+- One original-leased atomic transaction published only the five declared fork
+  refs; invocation carry and Integration advanced, others stayed fixed. Exact-SHA
+  [Integration CI 37722344809](https://github.com/possibilities/codexnk-codex/actions/runs/37722344809)
+  and [invocation CI 37722344757](https://github.com/possibilities/codexnk-codex/actions/runs/37722344757)
+  passed their branch-specific required steps. Immutable `codexnk-v0.1.9` was
+  created and re-read at frozen Integration. [Tag workflow 37835492620](https://github.com/possibilities/codexnk-codex/actions/runs/37835492620)
+  is under native wait. Both-package verification and isolated proof gate actual
+  installation. Canonical consumers still pin v0.1.8; consumer landing,
+  reconciliation and final cleanup remain pending. Concurrent AgentStart/Stack
+  landings will be preserved at handover; no Stack remote history is published.
 
 ## Delivered baseline: v0.1.8, 2026-10-07
 
