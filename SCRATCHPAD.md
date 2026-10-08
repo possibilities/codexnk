@@ -70,8 +70,41 @@
   `/Volumes/Scratch/archive/codexnk-cycles/runtime-lifetime-20261007/`.
   Startup review of the five retained prior-cycle trees reconfirmed their cached
   tool-service bindings and explicit operator-release/coordinator-recheck handoffs.
-  New-cycle source retirement and final output cleanup are recorded below after
-  Workshop publication; only that closure remains pending.
+  New-cycle source retirement and successful final output cleanup are recorded
+  in the closure entry below. No product, release or consumer work remains pending.
+
+## Runtime repair cycle closure and worktree handoff, 2026-10-08
+
+- Workshop delivery and standing validation-fixture guidance were landed and
+  published at `c3d5bed7b9f266610e5d1955668bd7f9ee0d8a9f`. Coordinator and
+  completed reviewer sessions moved to the stable canonical Workshop before
+  exact source retirement. Fresh review covered all five task-owned trees,
+  their actual common repositories/registrations, committed refs, complete
+  tracked/untracked/ignored inventories, evidence hashes and open-file activity.
+- Retired four delivered, quiescent trees: `invocation-axes`, `integration`,
+  `agentstart`, and the Scratch `stack` task checkout. Every branch and accepted
+  commit remains preserved. Eleven useful JUnit/build logs were individually
+  archived and hash-verified; classified regenerable caches were removed only
+  after fresh ownership/hash/activity checks. Source retirement used the actual
+  common repositories' `git worktree remove`, from stable checkouts, without
+  force, reset, stash, prune or unrelated process shutdown.
+- Retained exactly one new-cycle source tree:
+  `worktrees/runtime-lifetime-20261007/workshop`. Its source is delivered and
+  committed, but the OpenCode host retains an open directory handle after native
+  session moves. Responsible owner: maintenance coordinator. Next step: OpenCode
+  operator releases this exact cached location without interrupting other
+  sessions; coordinator freshly verifies refs/evidence/status/activity and
+  retires it from outside the tree. Historical PIDs are observations, never
+  authority to stop a process. The five prior-cycle handoffs reviewed at startup
+  remain separate and unchanged.
+- Hash-verified all 305 pre-final evidence files, all eleven archived source
+  reports and all five preserved task refs. Mandatory
+  `cycle.py final runtime-lifetime-20261007 --evidence-saved` succeeded:
+  target/tmp are empty and ownership/lock records remain. Evidence is preserved
+  under `/Volumes/Scratch/archive/codexnk-cycles/runtime-lifetime-20261007/`,
+  including `worktree-retirement-summary.json`, per-tree receipts,
+  `completion-evidence-sha256.json`, and `final.json`. This closure record is the
+  final source update; no watcher/build/test/install or consumer task is pending.
 
 ## Delivered baseline: v0.1.8, 2026-10-07
 
